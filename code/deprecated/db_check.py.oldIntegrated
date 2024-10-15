@@ -1,0 +1,17 @@
+import pandas as pd
+
+# Read the CSV file
+df = pd.read_csv('processed_data.csv')
+
+# Convert 'Datetime' column to datetime objects
+df['Datetime'] = pd.to_datetime(df['Datetime'])
+
+# Generate a complete range of hourly timestamps
+full_range = pd.date_range(start=df['Datetime'].min(), end=df['Datetime'].max(), freq='H')
+
+# Find missing timestamps
+missing_timestamps = full_range.difference(df['Datetime'])
+
+# Print missing timestamps
+print("Missing timestamps:")
+print(missing_timestamps)
