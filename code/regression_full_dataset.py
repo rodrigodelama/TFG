@@ -1,88 +1,96 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
-df = pd.read_csv('../data/processed_data.csv')
+# Import custom functions from matrix_builder
+from matrix_builder import select_data_for_window, sliding_window_matrix
 
+def evaluate_model(X, y):
+    # Check if we have enough data for train-test split
+    if X.shape[0] < 2 or y.shape[0] < 2:
+        print("Not enough samples to perform train-test split. Skipping this evaluation.")
+        return None, None  # Or use some default values
 
-# Assuming your DataFrame is df and contains columns 'Datetime' and 'MarginalES'
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Function to create input-output matrix
-def create_input_output_matrix(prices, window_size):
-    # Create the input matrix X and output vector y
-    X = []
-    y = []
-    for i in range(len(prices) - window_size):
-        X.append(prices[i:i + window_size])
-        y.append(prices[i + window_size])
-    return pd.DataFrame(X), pd.Series(y)
-
-# Function to evaluate window size and num_days_back
-def evaluate_window_and_days_back(df, target_date, num_days_back, window_sizes):
-    # Filter data for the last `num_days_back` days before the target date
-    filtered_df = df[df['Datetime'] < target_date].tail(num_days_back)
+    # Assuming you have a model defined
+    model = LinearRegression()
+    model.fit(X_train, y_train)
     
-    if len(filtered_df) < max(window_sizes):
-        return []  # Not enough data
+    y_pred = model.predict(X_test)
+
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
     
-    prices = filtered_df['MarginalES'].values
+    return mse, r2
+
+def test_all_dates_and_dimensions(csv_hour_file, window_sizes, days_back_options):
+    # Step 1: Load data as a DataFrame here
+    data = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])
+    print("Type of 'data' after loading:", type(data))  # Should print <class 'pandas.core.frame.DataFrame'>
+    print("First few rows of 'data':\n", data.head())   # Show some initial data to confirm structure
 
     results = []
-    for window_size in window_sizes:
-        X, y = create_input_output_matrix(prices, window_size)
-        if len(X) < 2:  # Need at least 2 samples to fit the model
-            continue
+
+    for date_idx, target_date in enumerate(data['Datetime']):
+        print(f"\nProcessing date index: {date_idx} - Target date: {target_date}")
         
-        # Fit the linear regression model
-        model = LinearRegression()
-        model.fit(X, y)
-        
-        # Predictions and metrics
-        y_pred = model.predict(X)
-        mse = mean_squared_error(y, y_pred)
-        r2 = r2_score(y, y_pred)
-        
-        results.append((window_size, num_days_back, mse, r2))
-    
-    return results
+        for num_days_back in days_back_options:
+            print(f"Testing num_days_back: {num_days_back}")
+            
+            # Select data for the specified number of days back
+            selected_data = select_data_for_window(data, target_date, max(window_sizes), num_days_back)
+            
+            if selected_data.empty:
+                print("Selected data is empty after filtering. Skipping to next iteration.")
+                continue  # Skip to the next iteration if no data is available
+            
+        for window_size in window_sizes:
+            print(f"Testing window size: {window_size}")
+            
+            # Generate sliding window matrix
+            X, y = sliding_window_matrix(selected_data['MarginalES'].values, window_size)
+            
+            print(f"Input matrix (X) shape: {X.shape}")
+            print(f"Output vector (y) shape: {y.shape}")
+            
+            # Check if the matrices are empty before proceeding
+            if X.size == 0 or y.size == 0:
+                print(f"Input matrix (X) or output vector (y) is empty. Skipping this configuration.")
+                continue
+            
+            # Check if we have enough data for model evaluation
+            if X.shape[0] < 2 or y.shape[0] < 2:
+                print(f"Not enough samples to perform train-test split for window size {window_size}. Skipping this configuration.")
+                continue
 
-# Ensure your DataFrame is sorted by Datetime
-df['Datetime'] = pd.to_datetime(df['Datetime'])
-df.sort_values('Datetime', inplace=True)
+            # Evaluate model performance
+            mse, r2 = evaluate_model(X, y)
 
-# Iterate over each target date, starting from the minimum required date
-results = []
-window_sizes = [3, 5, 7]  # Define window sizes
-num_days_back_list = [10, 15, 20, 30]  # Define num_days_back options
-
-# Define the earliest date you can process based on your data and num_days_back
-earliest_date = df['Datetime'].min() + pd.Timedelta(days=max(num_days_back_list))
-
-for target_date in df['Datetime']:
-    if target_date < earliest_date:
-        continue  # Skip dates that don't have enough historical data
-
-    for num_days_back in num_days_back_list:
-        res = evaluate_window_and_days_back(df, target_date, num_days_back, window_sizes)
-        if res:
-            for result in res:
-                window_size, num_days_back, mse, r2 = result
+            # Ensure that the results are valid before storing
+            if mse is not None and r2 is not None:
+                # Store the results for analysis
                 results.append({
-                    'target_date': target_date,
                     'window_size': window_size,
                     'num_days_back': num_days_back,
                     'mse': mse,
                     'r2': r2
                 })
-        else:
-            print(f"Not enough data for {target_date} with num_days_back={num_days_back}")
+                
+                print(f"Window size: {window_size}, Days back: {num_days_back}, MSE: {mse}, R²: {r2}")
+            else:
+                print(f"Evaluation for window size {window_size} returned None values. Skipping storage.")
+    
+    return pd.DataFrame(results)
 
-# Convert results to DataFrame
-results_df = pd.DataFrame(results)
+# Example test run
+csv_hour_file = 'data/ta_metrics/hour_14_metrics.csv'
+target_date = '2018-01-27 14:00:00'
+window_sizes = [3, 5, 7]  # Test different window sizes
+days_back_options = [10, 15, 20, 30]  # Test different number of days back
 
-# Find the best configuration for each date
-if not results_df.empty:
-    best_results = results_df.loc[results_df.groupby('target_date')['mse'].idxmin()]
-    print(best_results)
-else:
-    print("No valid results to display.")
+# Run the tests
+results_df = test_all_dates_and_dimensions(csv_hour_file, window_sizes, days_back_options)
+print("\nResults:")
+print(results_df)
