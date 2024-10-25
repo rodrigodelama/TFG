@@ -26,6 +26,12 @@ def evaluate_model(X, y, test_size=0.2):
     
     mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
+
+    # METRICAS HABLADAS CON EMILIO
+    # mse relativo dividir por lo que tienes que predecir
+    # estadisticas de casos peores
+    # percentil 95
+    # expectation short fall (ESF)
     
     return mse, r2
 
