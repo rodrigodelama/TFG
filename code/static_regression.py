@@ -39,13 +39,20 @@ def evaluate_model(X, y, test_size=0.2):
 
 # Function to test different window sizes and days back
 def test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options):
+    # Load data as a DataFrame
+    data = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])
+    data = data[['Datetime', 'MarginalES']]
+    data = data.sort_values('Datetime')
+
+    # Convert target_date from string to datetime
+    target_date = pd.to_datetime(target_date)
+
     results = []
     
     for num_days_back in days_back_options:
         print(f"\nTesting num_days_back: {num_days_back}")
         
-        # Select data for the specified number of days back
-        selected_data = select_data_for_window(csv_hour_file, target_date, max(window_sizes), num_days_back)
+        selected_data = select_data_for_window(data, target_date, max(window_sizes), num_days_back)
         
         for window_size in window_sizes:
             print(f"Testing window size: {window_size}")
@@ -53,18 +60,18 @@ def test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_bac
             # Generate sliding window matrix
             X, y = sliding_window_matrix(selected_data, window_size)
             
-            # Evaluate model performance
-            mse, r2 = evaluate_model(X, y)
-            
-            # Store the results for analysis
-            results.append({
-                'window_size': window_size,
-                'num_days_back': num_days_back,
-                'mse': mse,
-                'r2': r2
-            })
-            
-            print(f"Window size: {window_size}, Days back: {num_days_back}, MSE: {mse}, R²: {r2}")
+            # Check if X or y are empty before evaluation
+            if not X.empty and not y.empty:
+                mse, r2 = evaluate_model(X, y)
+                results.append({
+                    'window_size': window_size,
+                    'num_days_back': num_days_back,
+                    'mse': mse,
+                    'r2': r2
+                })
+                print(f"Window size: {window_size}, Days back: {num_days_back}, MSE: {mse}, R²: {r2}")
+            else:
+                print(f"Skipping evaluation for window size: {window_size}, Days back: {num_days_back} due to empty X or y.")
     
     return pd.DataFrame(results)
 
