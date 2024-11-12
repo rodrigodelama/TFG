@@ -19,6 +19,12 @@ def debug_print(message):
     if debug:
         print(message)
 
+#! To be reviewed and deprecated
+# The idea is to combine it all into regression.py and remove this file
+# In this way, we can have a single file for the regression model and metrics
+# And we can use the same functions for both the basic and advanced metrics
+# If we only need some metrics we can use DataFrame filtering to get those columns
+
 # Function to evaluate a linear regression model
 def evaluate_model(X, y, test_size=0.2):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
