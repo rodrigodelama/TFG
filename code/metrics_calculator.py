@@ -16,9 +16,11 @@ import os # To check if the file exists
 
 # File definitions: where to grab the data from, where to save the results to
 # csv_hour_file = 'data/ta_metrics/hour_14_metrics.csv'
-csv_hour_file = 'data/processed_data_no_weekends.csv'
+# csv_hour_file = 'data/processed_data_no_weekends.csv'
+csv_hour_file = 'data/return_data.csv'
 # results_file = f'data/metrics/results_more_metrics.csv'
-results_file = f'data/metrics/results_no_weekends.csv'
+# results_file = f'data/metrics/results_no_weekends.csv'
+results_file = f'data/metrics/results_return_data.csv'
 
 # Check if the file exists and is not empty
 write_header = not os.path.isfile(results_file) or os.path.getsize(results_file) == 0
