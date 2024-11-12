@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import (
     mean_squared_error,
+    root_mean_squared_error,
     r2_score,
     mean_absolute_error,
     explained_variance_score,
@@ -29,7 +30,7 @@ def evaluate_model(X, y, test_size=0.2):
     
     # Calculate metrics
     mse = mean_squared_error(y_test, y_pred)
-    # rmse = mean_squared_error(y_test, y_pred, squared=False)  # Root Mean Squared Error
+    # DEPRECATED # rmse = mean_squared_error(y_test, y_pred, squared=False)  # Root Mean Squared Error
     rmse = root_mean_squared_error(y_test, y_pred)           # Root Mean Squared Error
     mae = mean_absolute_error(y_test, y_pred)                # Mean Absolute Error
     r2 = r2_score(y_test, y_pred)                            # R² score

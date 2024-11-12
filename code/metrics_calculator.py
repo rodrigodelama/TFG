@@ -7,37 +7,41 @@ Professor: Emilio Parrado
 File: code/metrics_calculator.py
 '''
 
+# We want to iterate through the whole database to calculate the regression metrics
+
 import pandas as pd
 import regression
 import regression_more_metrics
 import os # To check if the file exists
 
-# Iterate through the whole database to calculate the regression metrics
+# File definitions: where to grab the data from, where to save the results to
 # csv_hour_file = 'data/ta_metrics/hour_14_metrics.csv'
 csv_hour_file = 'data/processed_data_no_weekends.csv'
-
-# Define the file where to save the results
-# file_path = f'data/metrics/results_more_metrics.csv'
-file_path = f'data/metrics/results_no_weekends.csv'
+# results_file = f'data/metrics/results_more_metrics.csv'
+results_file = f'data/metrics/results_no_weekends.csv'
 
 # Check if the file exists and is not empty
-write_header = not os.path.isfile(file_path) or os.path.getsize(file_path) == 0
+write_header = not os.path.isfile(results_file) or os.path.getsize(results_file) == 0
 
 window_sizes = [3, 5, 7]  # Test different window sizes
 days_back_options = [10, 15, 20, 30]  # Test different number of days back
 
+# Load the target dates
+target_dates = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])['Datetime']
 
-for target_date in pd.read_csv(csv_hour_file, parse_dates=['Datetime'])['Datetime']:
+# Iterate through each target date and calculate metrics
+for target_date in target_dates:
+    try:
+        print(f"Target date: {target_date}")
 
-    # Only write header if the file doesn’t exist
-    write_header = not os.path.isfile(file_path) or os.path.getsize(file_path) == 0
-
-    print(f"Target date: {target_date}")
-
-    # results_df = regression.test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options)
-    results_df = regression_more_metrics.test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options)
-    
-    # Review appending results about the headers - headers may be added later when the file is parsed to a DataFrame
-    # Append the results to the results file
-    # Write to CSV, adding headers only if the file is new or empty
-    results_df.to_csv(file_path, mode='a', header=write_header, index=False)
+        # Calculate the results
+        results_df = regression.test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options)
+        # results_df = regression_more_metrics.test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options)
+        
+        # Append the results to the results file
+        results_df.to_csv(results_file, mode='a', header=write_header, index=False)
+        
+        # After writing once, reset write_header to False
+        write_header = False
+    except Exception as e:
+        print(f"Failed for date {target_date} with error: {e}")

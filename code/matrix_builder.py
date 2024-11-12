@@ -9,22 +9,23 @@ File: code/matrix_builder.py
 
 import pandas as pd
 
-def select_data_for_window(data, target_date, num_days_back, window_size):
-    # Convert target_date to a Timestamp for use in filtering with the DataFrame
-    target_date = pd.to_datetime(target_date)
+# New Version to handle weekends and other gaps in the dataset 
+def select_data_for_window(data, target_date, num_data_points, max_window_size):
+    """
+    Selects the specified number of data points before the target date,
+    ignoring weekends or other gaps in the dataset.
+    """
+    # Filter data up to the target_date
+    data = data[data['Datetime'] < target_date]
     
-    # Filtering logic
-    # Based on the target date and date range to look back
-    filtered_data = data[
-        (data['Datetime'] <= target_date) &
-        (data['Datetime'] >= (target_date - pd.Timedelta(days= num_days_back + window_size - 1)))
-    ]
+    # Sort by date in descending order to get the most recent points first
+    data = data.sort_values(by='Datetime', ascending=False)
     
-    # Print filtered data to debug
-    # print("\nFiltered DataFrame (within date range):")
-    # print(filtered_data)
+    # Select the specified number of data points (e.g., num_days_back)
+    selected_data = data.head(num_data_points + max_window_size)
     
-    return filtered_data
+    # Reverse to maintain chronological order after filtering
+    return selected_data.sort_values(by='Datetime', ascending=True)
 
 # Build the matrix and vector (m x n) for the sliding window approach
 # WIDTH --> window_size: Number of columns in the matrix
