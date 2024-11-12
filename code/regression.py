@@ -46,26 +46,29 @@ def evaluate_model(X, y, test_size=0.2):
     return mse, r2
 
 # Function to test different window sizes and days back
-def test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options):
+def test_window_and_days_back(csv_hour_file, target_date, window_sizes, num_data_points_options):
     results = []
 
+    # Load and filter data as usual
     data = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])
     data = data[['Datetime', 'MarginalES']]
     
-    for num_days_back in days_back_options:
-        debug_print(f"\nTesting num_days_back: {num_days_back}")
+    # Iterate over different options for number of data points
+    for num_data_points in num_data_points_options:
+        debug_print(f"\nTesting num_data_points: {num_data_points}")
         
-        # Select data for the specified number of days back
-        filtered_data = matrix_builder.select_data_for_window(data, target_date, num_days_back, max(window_sizes))
+        # Select the required number of data points up to the target date
+        filtered_data = matrix_builder.select_data_for_window(data, target_date, num_data_points, max(window_sizes))
         
         prices = filtered_data['MarginalES'].values
 
+        # Test each window size for the current number of data points
         for window_size in window_sizes:
             debug_print(f"Testing window size: {window_size}")
 
             try:
                 # Generate sliding window matrix
-                X, y = matrix_builder.sliding_window_matrix(prices, window_size, num_days_back)
+                X, y = matrix_builder.sliding_window_matrix(prices, window_size, num_data_points)
                 
                 # Evaluate model performance
                 mse, r2 = evaluate_model(X, y)
@@ -74,15 +77,14 @@ def test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_bac
                 results.append({
                     'target_date': target_date,
                     'window_size': window_size,
-                    'num_days_back': num_days_back,
+                    'num_data_points': num_data_points,
                     'mse': mse,
                     'r2': r2
                 })
-                debug_print(f"Window size: {window_size}, Days back: {num_days_back}, MSE: {mse}, R²: {r2}")
+                debug_print(f"Window size: {window_size}, Data points: {num_data_points}, MSE: {mse}, R²: {r2}")
 
             except Exception as e:
-                print(f"Failed for date {target_date} with dimensions width={window_size}, depth={num_days_back}: {e}")
-            
+                print(f"Failed for date {target_date} with dimensions width={window_size}, depth={num_data_points}: {e}")
 
     return pd.DataFrame(results)
 
