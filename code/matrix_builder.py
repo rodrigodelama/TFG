@@ -1,3 +1,12 @@
+'''
+uc3m
+Bachelor Thesis: Machine Learning-Based Predictive Modeling of Energy Prices
+Author: Rodrigo De Lama Fernández
+Professor: Emilio Parrado
+
+File: code/matrix_builder.py
+'''
+
 import pandas as pd
 
 def select_data_for_window(data, target_date, num_days_back, window_size):
@@ -33,7 +42,6 @@ def sliding_window_matrix(prices, window_size, num_days_back):
     y = pd.Series(y)
 
     return X, y
-
 
 '''
 # Example usage

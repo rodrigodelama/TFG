@@ -1,13 +1,5 @@
-'''
-uc3m
-Bachelor Thesis: Machine Learning-Based Predictive Modeling of Energy Prices
-Author: Rodrigo De Lama Fernández
-Professor: Emilio Parrado
-
-File: code/regression.py
-'''
-
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import (
@@ -17,11 +9,7 @@ from sklearn.metrics import (
     explained_variance_score,
     max_error
 )
-
-# Import custom functions
 import matrix_builder
-
-# import os # To check if the file exists
 
 # Debug flag
 debug = False
@@ -29,7 +17,6 @@ debug = False
 def debug_print(message):
     if debug:
         print(message)
-
 
 # Function to evaluate a linear regression model
 def evaluate_model(X, y, test_size=0.2):
@@ -40,10 +27,22 @@ def evaluate_model(X, y, test_size=0.2):
     
     y_pred = model.predict(X_test)
     
+    # Calculate metrics
     mse = mean_squared_error(y_test, y_pred)
-    r2 = r2_score(y_test, y_pred)
+    # rmse = mean_squared_error(y_test, y_pred, squared=False)  # Root Mean Squared Error
+    rmse = root_mean_squared_error(y_test, y_pred)           # Root Mean Squared Error
+    mae = mean_absolute_error(y_test, y_pred)                # Mean Absolute Error
+    r2 = r2_score(y_test, y_pred)                            # R² score
+    explained_variance = explained_variance_score(y_test, y_pred)
+    max_err = max_error(y_test, y_pred)
+    mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100  # Mean Absolute Percentage Error
     
-    return mse, r2
+    # Calculate adjusted R²
+    n = len(y_test)  # Number of samples
+    p = X.shape[1]   # Number of predictors
+    adjusted_r2 = 1 - (1 - r2) * (n - 1) / (n - p - 1)
+    
+    return mse, rmse, mae, r2, adjusted_r2, explained_variance, max_err, mape
 
 # Function to test different window sizes and days back
 def test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options):
@@ -67,45 +66,32 @@ def test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_bac
                 # Generate sliding window matrix
                 X, y = matrix_builder.sliding_window_matrix(prices, window_size, num_days_back)
                 
-                # Evaluate model performance
-                mse, r2 = evaluate_model(X, y)
+                # Evaluate model performance with multiple metrics
+                mse, rmse, mae, r2, adjusted_r2, explained_variance, max_err, mape = evaluate_model(X, y)
                 
-                # Store the results for analysis
+                # Store all metrics in results for analysis
                 results.append({
                     'target_date': target_date,
                     'window_size': window_size,
                     'num_days_back': num_days_back,
                     'mse': mse,
-                    'r2': r2
+                    'rmse': rmse,
+                    'mae': mae,
+                    'r2': r2,
+                    'adjusted_r2': adjusted_r2,
+                    'explained_variance': explained_variance,
+                    'max_error': max_err,
+                    'mape': mape
                 })
-                debug_print(f"Window size: {window_size}, Days back: {num_days_back}, MSE: {mse}, R²: {r2}")
+                debug_print(
+                    f"Window size: {window_size}, Days back: {num_days_back}, "
+                    f"MSE: {mse}, RMSE: {rmse}, MAE: {mae}, R²: {r2}, "
+                    f"Adjusted R²: {adjusted_r2}, Explained Variance: {explained_variance}, "
+                    f"Max Error: {max_err}, MAPE: {mape}%"
+                )
 
             except Exception as e:
                 print(f"Failed for date {target_date} with dimensions width={window_size}, depth={num_days_back}: {e}")
-            
-
+    
+    # Convert results to a DataFrame for analysis
     return pd.DataFrame(results)
-
-'''
-# Example test run
-csv_hour_file = 'data/ta_metrics/hour_14_metrics.csv'
-target_date = '2018-03-27 14:00:00'
-window_sizes = [3, 5, 7]  # Test different window sizes
-days_back_options = [10, 15, 20, 30]  # Test different number of days back
-
-# Run the tests
-results_df = test_window_and_days_back(csv_hour_file, target_date, window_sizes, days_back_options)
-
-# Display all results
-print("\nResults:")
-print(results_df)
-
-# Append the results to the results file
-results_df.to_csv(f'data/metrics/results_{target_date}.csv', index=False)
-
-file_path = f'data/metrics/results.csv'
-write_header = not os.path.exists(file_path) # Only write header if the file doesn’t exist
-
-# Append the results to the results file
-results_df.to_csv(file_path, mode='a', header=write_header, index=False)
-'''
