@@ -11,6 +11,19 @@ Organizes the results by the best metrics, in this case just lowest MSE and high
 And prints the most common dimensions in the top 1000 results
 '''
 
+'''
+NO USAR ESTE SCRIPT, USAR LA MODA PARA LAS DIMENSIONES
+
+MEJOR USAR MEDIA O MEDIANA PARA LOS RESULTADOS
+
+SI HAY MCUHOS DIAS DODNE SE PIRA, MEJOR AL MEDIANA
+
+SI NO HAY GRANDES DIFERENCIAS ENTRE LOS RESULTADOS, MEJOR LA MEDIA
+
+CONSTRUIR LA MATRIZ 3D Y APLANARLA PARA HACER LA MEDIA O LA MEDIANA
+ELEGIMOS LA MENOS MALA
+'''
+
 import pandas as pd
 
 # File path

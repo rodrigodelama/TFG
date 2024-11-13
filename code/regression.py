@@ -45,6 +45,12 @@ def evaluate_model(X, y, test_size=0.2):
     
     return mse, r2
 
+# Function to train a linear regression model
+def train_model(X, y):
+    model = LinearRegression()
+    model.fit(X, y)
+    return model
+
 # Function to test different window sizes and days back
 def test_window_and_days_back(csv_hour_file, target_date, window_sizes, num_data_points_options):
     results = []
