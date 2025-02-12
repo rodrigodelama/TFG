@@ -89,46 +89,35 @@ unique_columns = mse_matrix["Columns"].unique()
 # Create the 3D matrix
 matrix = np.zeros((len(unique_dates), len(unique_rows), len(unique_columns)))
 
-# Fill the matrix with the MSE values
-for i, date in enumerate(unique_dates):
-    for j, row in enumerate(unique_rows):
-        for k, column in enumerate(unique_columns):
-            mse = mse_matrix[(mse_matrix["Datetime"] == date) & (mse_matrix["Rows"] == row) & (mse_matrix["Columns"] == column)]["MSE"]
-            if mse.empty:
-                matrix[i, j, k] = np.nan
-            else:
-                matrix[i, j, k] = mse.values[0]
+# # Fill the matrix with the MSE values
+# for i, date in enumerate(unique_dates):
+#     for j, row in enumerate(unique_rows):
+#         for k, column in enumerate(unique_columns):
+#             mse = mse_matrix[(mse_matrix["Datetime"] == date) & (mse_matrix["Rows"] == row) & (mse_matrix["Columns"] == column)]["MSE"]
+#             if mse.empty:
+#                 matrix[i, j, k] = np.nan
+#             else:
+#                 matrix[i, j, k] = mse.values[0]
 
-# Print the matrix
-print(matrix)
+# # Print the matrix
+# print(matrix)
 
-# Save the matrix
-np.save('data/metrics/mse_matrix.npy', matrix)
+# # Save the matrix
+# np.save('data/metrics/mse_matrix.npy', matrix)
+
+# mean_matrix1 = np.mean(matrix, axis=0)
+
+# print(mean_matrix1)
+
+
+# CPT code
 
 # AVERAGE MATRIX
 # Calculate the average of each matrix position
 # Average out all the individual results to get a single value that takes into account all layers
 
 
-# MEDIAN MATRIX
-# Calculate the median of each matrix position
-# Median out all the individual results to get a single value that takes into account all layers
-
-
-
-
-
-
-
-
-
-# Repeat the process for the R² values
-
-# R² only data set
-# r2_matrix = data[["Rows", "Columns", "R2"]]
-
-#####! ChatGPT code
-'''
+# Doesnt really make sense because we dont want the average position over many, we want a rolling window that matches up best with the stationary sections over itme
 # Convert the 'Datetime' column to datetime object and extract date (ignoring time)
 mse_matrix['Datetime'] = pd.to_datetime(mse_matrix['Datetime'])
 mse_matrix['Date'] = mse_matrix['Datetime'].dt.date
@@ -152,9 +141,9 @@ matrices = []
 
 # Group data by each day
 for date, group in mse_matrix.groupby('Date'):
-    # Check if group has complete data
+    # Check if group has complete data (no NaNs)
     if is_complete(group, rows, columns):
-        # Initialize an empty matrix
+        # Initialize an empty matrix of the 
         matrix = np.zeros((rows, columns))
         
         # Fill the matrix with values
@@ -171,7 +160,7 @@ for date, group in mse_matrix.groupby('Date'):
 # Stack matrices into a 3D array if any matrices exist
 if matrices:
     big_matrix = np.stack(matrices, axis=0)
-    print("3D Matrix created with shape:", big_matrix.shape)
+    print("\n3D Matrix created with shape:", big_matrix.shape)
 else:
     print("No complete matrices were found.")
 
@@ -179,11 +168,11 @@ else:
 print(big_matrix)
 
 # save the 3D matrix
-np.save('data/metrics/mse_matrix.npy', big_matrix)
+# np.save('data/metrics/mse_matrix.npy', big_matrix)
 
 # Get the mean of the 3D matrix
 mean_matrix = np.mean(big_matrix, axis=0)
-print("Mean matrix created with shape:", mean_matrix.shape)
+print("\nMean matrix created with shape:", mean_matrix.shape)
 print(mean_matrix)
 # Print the lowest value and its index
 min_value = np.min(mean_matrix)
@@ -192,11 +181,27 @@ print(f"Lowest value: {min_value} at index {min_index}")
 
 # Get the median of the 3D matrix
 median_matrix = np.median(big_matrix, axis=0)
-print("Median matrix created with shape:", median_matrix.shape)
+print("\nMedian matrix created with shape:", median_matrix.shape)
 print(median_matrix)
 # Print the lowest value and its index
 min_value = np.min(median_matrix)
 min_index = np.unravel_index(np.argmin(median_matrix, axis=None), median_matrix.shape)
 print(f"Lowest value: {min_value} at index {min_index}")
-'''
-#####! ChatGPT code
+
+
+# MEDIAN MATRIX
+# Calculate the median of each matrix position
+# Median out all the individual results to get a single value that takes into account all layers
+
+
+
+
+
+
+
+
+
+# Repeat the process for the R² values
+
+# R² only data set
+# r2_matrix = data[["Rows", "Columns", "R2"]]

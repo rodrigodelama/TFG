@@ -31,19 +31,23 @@ def debug_print(message):
         print(message)
 
 
-# Function to evaluate a linear regression model
-def evaluate_model(X, y, test_size=0.2):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+# # Function to evaluate a linear regression model
+# def evaluate_model(X, y, test_size=0.2):
+#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
     
-    model = LinearRegression()
-    model.fit(X_train, y_train)
+#     model = LinearRegression()
+#     model.fit(X_train, y_train)
     
-    y_pred = model.predict(X_test)
+#     y_pred = model.predict(X_test)
     
-    mse = mean_squared_error(y_test, y_pred)
-    r2 = r2_score(y_test, y_pred)
+#     mse = mean_squared_error(y_test, y_pred)
+#     r2 = r2_score(y_test, y_pred)
     
-    return mse, r2
+#     return mse, r2
+
+# NO HACER TRAIN TEST SPLIT aqui entrenar solo con los anteriores datos
+# Un par de dias, no todos
+# La clave es intentar encontrar la rolling window que mejor encaja con los datos no estacionarios
 
 # Function to train a linear regression model
 def train_model(X, y):
