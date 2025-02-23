@@ -33,4 +33,4 @@ def plot_csv(file_path):
 # Example usage
 # plot_csv('data/processed_data.csv')
 
-# plot_csv('data/hour_14_metrics.csv')
+plot_csv('data/hour_14_metrics.csv')

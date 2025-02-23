@@ -44,12 +44,14 @@ def sliding_window_matrix(prices, window_size, num_days_back):
 
     return X, y
 
-'''
+# Square number
+SQ_NUM = 6
+
 # Example usage
 csv_hour_file = 'data/ta_metrics/hour_14_metrics.csv'
 target_date = '2018-01-27 14:00:00'
-window_size = 6  # Number of previous days to include in the window
-num_days_back = 6  # Total days to look back for the matrix, inclusive of the window
+window_size = SQ_NUM  # Number of previous days to include in the window
+num_days_back = SQ_NUM  # Total days to look back for the matrix, inclusive of the window
 
 # Load the CSV data once to avoid reloading
 data = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])
@@ -78,4 +80,5 @@ print("\nInput matrix (X):")
 print(X)
 print("\nOutput vector (y):")
 print(y)
+'''
 '''

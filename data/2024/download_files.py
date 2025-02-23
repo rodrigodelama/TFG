@@ -1,6 +1,8 @@
+# OLD style
 # https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename=marginalpdbc_20230101.1
-# https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename=marginalpdbc_20230102.1
 
+# NEW style
+# https://www.omie.es/es/file-download?parents=marginalpdbc&filename=marginalpdbc_20241002.1
 import requests
 import os
 
@@ -10,7 +12,9 @@ def download_files(urls):
         filename = url.split('=')[-1]
         
         # Send a GET request to download the file
-        response = requests.get(url)
+        # response = requests.get(url)
+        # Send a GET request to download the file, ignoring SSL verification
+        response = requests.get(url, verify=False)
         
         # Check if the request was successful
         if response.status_code == 200:
@@ -22,7 +26,7 @@ def download_files(urls):
             print(f"Failed to download {filename}")
 
 def read_filenames_and_compose_urls(file_path):
-    base_url = "https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename="
+    base_url = "https://www.omie.es/es/file-download?parents=marginalpdbc&filename="
     
     # Read the filenames from the .txt file
     with open(file_path, 'r') as file:
@@ -34,7 +38,8 @@ def read_filenames_and_compose_urls(file_path):
     return urls
 
 # Example usage
-file_path = '2024.txt'
+# file_path = '2024.txt'
+file_path = 'data/2024/2024-2025.txt'
 urls = read_filenames_and_compose_urls(file_path)
 
 download_files(urls)
