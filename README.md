@@ -14,3 +14,10 @@ source .tfg_venv/bin/activate
 pip install --upgrade pip
 pip install -r code/requirements.txt
 ```
+
+The project is meant to be contained in a virtual environment
+To create a virtual environment use: python3 -m venv .tfg_env
+To activate the virtual environment use: source .tfg_env/bin/activate
+    or in Windows: .tfg_env\Scripts\Activate.ps1
+To deactivate the virtual environment use: deactivate
+
