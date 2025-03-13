@@ -5,6 +5,8 @@ numpy
 matplotlib
 ta
 ipykernel
+xgboost
+lightgbm
 
 # Tested using Python 3.13.1
 # Use pip freeze > requirements.txt to save the following packages
