@@ -4,7 +4,8 @@ Bachelor Thesis: Machine Learning-Based Predictive Modeling of Energy Prices
 Author: Rodrigo De Lama Fernández
 Professor: Emilio Parrado
 
-File: code/ta_eval.py
+Date: 2024-11-27
+File: code/regression_tests/ta_eval.py
 
 This script reads the technical analysis metrics from the CSV file
 Chooses the metrics we want to use for the regression model and evaluates the model

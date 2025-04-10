@@ -4,7 +4,8 @@ Bachelor Thesis: Machine Learning-Based Predictive Modeling of Energy Prices
 Author: Rodrigo De Lama Fernández
 Professor: Emilio Parrado
 
-File: code/db_builder.py
+Date: 2024-11-27
+File: code/data_processing/db_builder.py
 '''
 
 import pandas as pd
@@ -71,21 +72,21 @@ full_data.set_index('Datetime', inplace=True)
 full_data.drop(['Year', 'Month', 'Day', 'Hour', 'MarginalPT'], axis=1, inplace=True)
 
 # Save the full dataset to a CSV file
-full_data.to_csv('data/raw_data.csv')
+full_data.to_csv('../../data/raw_data.csv')
 
 
 # Database cleanup
 # Load the dataset
-df = pd.read_csv('data/raw_data.csv')
+df = pd.read_csv('../../data/raw_data.csv')
 
 # Sort the data by the 'Datetime' column
 df = df.sort_values(by='Datetime')
 
 # Save the sorted data to a new file if needed
-df.to_csv('data/processed_data.csv', index=False)
+df.to_csv('../../data/processed_data.csv', index=False)
 
 # Read the CSV file
-df = pd.read_csv('data/processed_data.csv')
+df = pd.read_csv('../../data/processed_data.csv')
 
 # Convert 'Datetime' column to datetime objects
 df['Datetime'] = pd.to_datetime(df['Datetime'])

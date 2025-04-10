@@ -1,3 +1,13 @@
+'''
+uc3m
+Bachelor Thesis: Machine Learning-Based Predictive Modeling of Energy Prices
+Author: Rodrigo De Lama Fernández
+Professor: Emilio Parrado
+
+Date: 2025-02-27
+File: code/utils/plots.py
+'''
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
