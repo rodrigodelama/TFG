@@ -10,6 +10,8 @@ This is my Bachelor Thesis: Machine Learning-Based Predictive Modeling of Energy
 
 Create a venv with the requirements.txt file:
 
+(if on macOS additionally install libomp before installing the requirements: brew install libomp)
+
 ```bash
 python3 -m venv .tfg_venv
 source .tfg_venv/bin/activate

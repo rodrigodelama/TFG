@@ -60,7 +60,8 @@ def create_weight_matrix(data, window_size, target_col='MarginalES'):
 
 # Read DB w features
 # csv_db_file = '../data/hour_14_metrics.csv'
-csv_db_file = '../../data/ta_metrics/0401_price_metrics_hour_14.csv'
+# csv_db_file = '../../data/ta_metrics/0401_price_metrics_hour_14.csv' # From the script directory
+csv_db_file = 'data/ta_metrics/0401_price_metrics_hour_14.csv' # From root
 df_sw = pd.read_csv(csv_db_file, parse_dates=['Datetime'])
 df_sw = df_sw[['Datetime', 'MarginalES']]
 

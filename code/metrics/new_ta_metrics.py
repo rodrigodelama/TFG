@@ -108,8 +108,8 @@ print("Infinity values per column:\n", df_hour.isin([np.inf, -np.inf]).sum())
 
 
 # Save the dataset with metrics for the selected hour
-df_hour.to_csv(f'data/ta_metrics/0401_price_metrics_hour_{hour_to_predict}.csv', index=False)
 # df_hour.to_csv(f'data/ta_metrics/new_return_metrics_hour_{hour_to_predict}.csv', index=False)
+df_hour.to_csv(f'data/ta_metrics/0401_price_metrics_hour_{hour_to_predict}.csv', index=False)
 
 # Output message
 print(f"Metrics for hour {hour_to_predict} calculated and saved to 'data/ta_metrics/0401_metrics_hour_{hour_to_predict}.csv'.")
