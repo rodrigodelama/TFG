@@ -5,7 +5,7 @@ Author: Rodrigo De Lama Fernández
 Professor: Emilio Parrado
 
 Date: 2025-02-27
-File: code/utils/plots.py
+File: code/utils/plot_metrics.py
 '''
 
 import pandas as pd
