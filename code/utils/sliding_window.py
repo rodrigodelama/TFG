@@ -158,7 +158,7 @@ def create_weight_matrix(data, window_size):
 
 
 #! REVIEW
-def create_sliding_window_with_features(dataframe, window_size, debug=False):
+def create_weight_matrix_with_features(dataframe, window_size, debug=False):
     """
     Creates a sliding window dataset for time series forecasting where each row contains:
     1. A window of historical prices (right-aligned)
