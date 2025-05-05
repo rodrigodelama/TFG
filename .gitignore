@@ -1,6 +1,7 @@
 # venv
 .tfg_venv
 .tfg_tfenv
+.tfg_ts_venv
 
 # macOS
 .DS_Store
