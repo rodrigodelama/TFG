@@ -1,6 +1,53 @@
 import requests
 from datetime import datetime, timedelta
 
+# --- Configuration ---
+FILE_PATH = 'year.txt'  # File to store generated filenames
+START_DATE = datetime(2025, 2, 14)
+END_DATE = datetime(2025, 3, 18)
+BASE_URL = "https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename="
+
+# --- Functions ---
+
+def generate_and_download_files(start_date: datetime, end_date: datetime, base_url: str, file_path: str):
+    """
+    Generates filenames for daily data, saves them to a file, and then downloads them.
+    """
+    current_date = start_date
+    filenames = []
+
+    # Generate filenames and store them
+    while current_date <= end_date:
+        filename = f'marginalpdbc_{current_date.strftime("%Y%m%d")}.1'
+        filenames.append(filename)
+        current_date += timedelta(days=1)
+
+    with open(file_path, 'w') as f:
+        for name in filenames:
+            f.write(name + '\n')
+    print(f"Generated {len(filenames)} filenames and saved to {file_path}")
+
+    # Download files
+    for filename in filenames:
+        url = base_url + filename
+        try:
+            # Added a timeout for robustness
+            response = requests.get(url, verify=False, timeout=10)
+            response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+            with open(filename, 'wb') as f:
+                f.write(response.content)
+            print(f"Downloaded {filename}")
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to download {filename}: {e}")
+
+# --- Execution ---
+if __name__ == "__main__":
+    generate_and_download_files(START_DATE, END_DATE, BASE_URL, FILE_PATH)
+
+
+import requests
+from datetime import datetime, timedelta
+
 # Usage instructions:
     # Set file name to save the filenames to download
     # Set start and end dates

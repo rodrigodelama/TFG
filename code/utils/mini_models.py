@@ -307,7 +307,7 @@ import logging
 import pandas as pd
 import numpy as np
 
-from utils.sliding_window import create_weight_matrix_with_features
+from utils.matrix_builder import create_feature_matrix_with_features
 from utils.logger import get_logger
 logger = get_logger(__name__)
 

@@ -22,19 +22,16 @@ for root, dirs, files in os.walk(base_path):
     for file in files:
         # Check if the file starts with 'marginalpdbc_' (ignorering the rest, including the extension)
         if file.startswith('marginalpdbc_'):
-            # Extract year and file date from the filename
-            file_path = os.path.join(root, file)
-            base_name = os.path.basename(file)
-            file_date = base_name.split('_')[1].split('.')[0] # Second split to remove the extension
             
             # Read the file
+            file_path = os.path.join(root, file)
             with open(file_path, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
 
             # Remove the first line (MARGINALPDBC;) and the last line (*)
             data_lines = lines[1:-1]
             
-            # Convert the list of strings into a DataFrame
+            # Convert the list of semicolon-separated strings into a DataFrame
             daily_data = pd.DataFrame([line.strip().split(';') for line in data_lines])
             
             # Remove trailing ';' from the last column
@@ -45,7 +42,7 @@ for root, dirs, files in os.walk(base_path):
             # Assign column names
             daily_data.columns = ['Year', 'Month', 'Day', 'Hour', 'MarginalPT', 'MarginalES']
             
-            # Remove rows with invalid data
+            # Remove rows with invalid data (in case accidental empty rows or non-numeric values get included)
             daily_data = daily_data[daily_data['Year'].str.isdigit()]  # Only keep rows where 'Year' is a number
             
             # Convert the columns to the appropriate data types
@@ -60,7 +57,7 @@ for root, dirs, files in os.walk(base_path):
 full_data = pd.concat(all_data, ignore_index=True)
 
 # Create a datetime column from Year, Month, Day, and Hour
-# Adjust the 'Hour' column to deal with the potential 25th hour issue ?????
+# Adjust the 'Hour' column to deal with the potential 25th hour issue 
 full_data['Hour'] = full_data['Hour'].apply(lambda x: 0 if x == 25 else x)
 full_data['Datetime'] = pd.to_datetime(full_data[['Year', 'Month', 'Day', 'Hour']], errors='coerce')
 
@@ -74,7 +71,6 @@ full_data.drop(['Year', 'Month', 'Day', 'Hour', 'MarginalPT'], axis=1, inplace=T
 # Save the full dataset to a CSV file
 full_data.to_csv('../../data/raw_data.csv')
 
-
 # Database cleanup
 # Load the dataset
 df = pd.read_csv('../../data/raw_data.csv')
@@ -82,7 +78,7 @@ df = pd.read_csv('../../data/raw_data.csv')
 # Sort the data by the 'Datetime' column
 df = df.sort_values(by='Datetime')
 
-# Save the sorted data to a new file if needed
+# Save the sorted data to a new file
 df.to_csv('../../data/processed_data.csv', index=False)
 
 # Read the CSV file

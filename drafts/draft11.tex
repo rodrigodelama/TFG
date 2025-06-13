@@ -1,0 +1,1875 @@
+%----------
+%   WARNING
+%----------
+
+% This Guide contains Library recommendations based mainly on APA and IEEE styles, but you must always follow the guidelines of your TFG Tutor and the TFG regulations for your degree.
+
+% THIS TEMPLATE IS BASED ON THE IEEE STYLE 
+
+% TFG - Machine Learning Based Predictive Modeling of Energy Prices
+
+%----------
+% DOCUMENT SETTINGS
+%----------
+
+\documentclass[12pt]{report} % font: 12pt
+
+% margins: 2.5 cm top and bottom; 3 cm left and right
+\usepackage[
+a4paper,
+vmargin=2.5cm,
+hmargin=3cm
+]{geometry}
+
+% Paragraph Spacing and Line Spacing: Narrow (6 pt / 1.15 spacing) or Moderate (6 pt / 1.5 spacing)
+\renewcommand{\baselinestretch}{1.15}
+\parskip=6pt
+
+% Color settings for cover and code listings 
+\usepackage[table]{xcolor}
+\definecolor{azulUC3M}{RGB}{0,0,102}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+% PDF/A -- Important for its inclusion in e-Archive. PDF/A is the optimal format for preservation and for the generation of metadata: http://uc3m.libguides.com/ld.php?content_id=31389625.
+
+% In the template we include the file OUTPUT.XMPDATA. You can download that file and include the metadata that will be incorporated into the PDF file when you compile the memoria.tex file. Then upload it back to your project.
+\usepackage[a-1b]{pdfx}
+
+% LINKS
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,
+	linkcolor=black, % links to parts of the document (e.g. index) in black
+	urlcolor=blue} % links to resources outside the document in blue
+
+% MATH EXPRESSIONS
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+
+% Character encoding
+\usepackage{txfonts} 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% English settings
+\usepackage[english]{babel} 
+\usepackage[babel, english=american]{csquotes}
+\AtBeginEnvironment{quote}{\small}
+
+% Footer settings
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\rfoot{\thepage}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+
+% DESIGN OF THE TITLES of the parts of the work (chapters and epigraphs or sub-chapters)
+\usepackage{titlesec}
+\usepackage{titletoc}
+\titleformat{\chapter}[block]
+{\large\bfseries\filcenter}
+{\thechapter.}
+{5pt}
+{\MakeUppercase}
+{}
+\titlespacing{\chapter}{0pt}{0pt}{*3}
+\titlecontents{chapter}
+[0pt]                                               
+{}
+{\contentsmargin{0pt}\thecontentslabel.\enspace\uppercase}
+{\contentsmargin{0pt}\uppercase}                        
+{\titlerule*[.7pc]{.}\contentspage}                 
+
+\titleformat{\section}
+{\bfseries}
+{\thesection.}
+{5pt}
+{}
+\titlecontents{section}
+[5pt]                                               
+{}
+{\contentsmargin{0pt}\thecontentslabel.\enspace}
+{\contentsmargin{0pt}}
+{\titlerule*[.7pc]{.}\contentspage}
+
+\titleformat{\subsection}
+{\normalsize\bfseries}
+{\thesubsection.}
+{5pt}
+{}
+\titlecontents{subsection}
+[10pt]                                               
+{}
+{\contentsmargin{0pt}                          
+	\thecontentslabel.\enspace}
+{\contentsmargin{0pt}}                        
+{\titlerule*[.7pc]{.}\contentspage}
+
+
+% Tables and figures settings
+\usepackage{multirow} % combine cells 
+\usepackage{caption} % customize the title of tables and figures
+\usepackage{floatrow} % we use this package and its \ ttabbox and \ ffigbox macros to align the table and figure names according to the defined style.
+\usepackage{array} % with this package we can define in the following line a new type of column for tables: custom width and centered content
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\DeclareCaptionFormat{upper}{#1#2\uppercase{#3}\par}
+\usepackage{graphicx}
+\graphicspath{{imagenes/}} % Images folder
+
+% Table layout for engineering
+\captionsetup*[table]{
+	format=upper,
+	name=TABLE,
+	justification=centering,
+	labelsep=period,
+	width=.75\linewidth,
+	labelfont=small,
+	font=small
+}
+
+% Figures layout for engineering
+\captionsetup[figure]{
+	format=hang,
+	name=Fig.,
+	singlelinecheck=off,
+	justification=centering, % added for formatting consistency
+	labelsep=period,
+	labelfont=small,
+	font=small		
+}
+
+% FOOTNOTES
+\usepackage{chngcntr} % continuous numbering of footnotes
+\counterwithout{footnote}{chapter}
+
+% CODE LISTINGS 
+% support and styling for listings. More information in  https://es.wikibooks.org/wiki/Manual_de_LaTeX/Listados_de_código/Listados_con_listings
+\usepackage{listings}
+
+% Custom listing
+\lstdefinestyle{estilo}{ frame=Ltb,
+	framerule=0pt,
+	aboveskip=0.5cm,
+	framextopmargin=3pt,
+	framexbottommargin=3pt,
+	framexleftmargin=0.4cm,
+	framesep=0pt,
+	rulesep=.4pt,
+	backgroundcolor=\color{gray97},
+	rulesepcolor=\color{black},
+	%
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\bfseries,
+	stringstyle=\ttfamily,
+	showstringspaces = false,
+	commentstyle=\color{gray45},     
+	%
+	numbers=left,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true,
+	xleftmargin=\parindent
+}
+
+\captionsetup*[lstlisting]{font=small, labelsep=period}
+
+\lstset{style=estilo}
+\renewcommand{\lstlistingname}{\uppercase{Código}}
+
+
+% REFERENCES 
+
+% IEEE bibliography setup
+\usepackage[backend=biber, style=ieee, isbn=false,sortcites, maxbibnames=6, minbibnames=1]{biblatex} % Setting for IEEE citation style, recommended for engineering. "maxbibnames" indicates that from 6 authors truncate the list in the first one (minbibnames) and add "et al." as used in the IEEE style.
+
+\addbibresource{referencias.bib} % The references.bib file in which the bibliography used should be
+
+
+% MY ADDITIONS
+% BLOCK DIAGRAMS
+% \usepackage{tikz}
+% \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, fit}  % Ensure 'fit' is included
+
+\tikzstyle{process} = [rectangle, minimum width=3.5cm, minimum height=1cm, text centered, draw=black, fill=blue!10] % Maybe get rid of the blue
+\tikzstyle{arrow} = [thick,->,>=Stealth]
+
+% INDENT FIRST PARAGRAPH AFTER SECTION
+\usepackage{indentfirst}
+
+% CODE - https://www.overleaf.com/learn/latex/Code_listing
+\usepackage{listings}
+
+% GANTT DIAGRAM
+\usepackage{pgfgantt}
+% \usepackage[margin=1in]{geometry} % better margins?
+
+% For top or lower notation in text like 14th
+\usepackage{textcomp}
+
+%----------
+%	DOCUMENT
+%----------
+
+\begin{document}
+\pagenumbering{roman} % Roman numerals are used in the numbering of the pages preceding the body of the work.
+
+
+
+%----------
+%	COVER
+%----------	
+\begin{titlepage}
+	\begin{sffamily}
+	\color{azulUC3M}
+	\begin{center}
+		\begin{figure}[H] % UC3M Logo
+			\makebox[\textwidth][c]{\includegraphics[width=16cm]{logo_UC3M.png}}
+		\end{figure}
+		\vspace{2.5cm}
+		\begin{Large}
+			Bachelor in Telematics Engineering\\			
+			 2024-2025\\ % Academic year
+			\vspace{2cm}		
+			\textsl{Bachelor Thesis}
+			\bigskip
+			
+		\end{Large}
+		 	{\Huge ``Machine Learning-Based Predictive Modeling of Energy Prices''}\\
+		 	\vspace*{0.5cm}
+	 		\rule{10.5cm}{0.1mm}\\
+			\vspace*{0.9cm}
+			{\LARGE Rodrigo De Lama Fernández}\\ 
+			\vspace*{1cm}
+		\begin{Large}
+			Emilio Parrado Hernández\\
+			Leganés, Spain, June 16\textsuperscript{th} 2025\\
+		\end{Large}
+	\end{center}
+	\vfill
+	\color{black}
+	% IF OUR WORK IS TO BE PUBLISHED UNDER A CREATIVE COMMONS LICENSE, INCLUDE THESE LINES. IS THE RECOMMENDED OPTION.
+	\includegraphics[width=4.2cm]{creativecommons.png}\\ % Creative Commons Logo
+    This work is licensed under Creative Commons \textbf{Attribution – Non Commercial – Non Derivatives}
+	\end{sffamily}
+\end{titlepage}
+
+%- three spaces will mean next page
+
+\newpage % blank page
+\thispagestyle{empty}
+\mbox{}
+
+
+
+%----------
+%	ABSTRACT AND KEYWORDS 
+%----------
+% summary es algo mas extendido - miro lo que diga la uni
+\renewcommand\abstractname{\large\bfseries\filcenter\uppercase{Summary}}
+\begin{abstract}
+\thispagestyle{plain}
+\setcounter{page}{3}
+	
+	% Write your abstract
+    This project focuses on the development of a machine learning-based predictive model for electricity prices in Spain. Using historical data from the OMIE (\textit{Operador del Mercado Ibérico de Energía}) and technical analysis indicators, the model aims to accurately forecast hourly energy prices. The study focuses on a single hourly slot, evaluating the performance of various machine learning models, such as Linear Regression, Lasso, and Random Forest. The project focuses on using a sliding window approach alongside feature engineering, employing technical analysis indicators such as moving averages, exponential moving averages, and momentum metrics. The results display the impact of tailoring the features to improve model accuracy and offer insights into the potential of data-driven approaches for energy price forecasting.
+
+% \vspace*{length}
+% \medskip
+\bigskip
+	\textbf{Keywords:} % add the keywords
+            
+            Energy, Machine Learning, Sliding Window, Technical Analysis (TA), Technical Indicators
+
+            % Add more keywords
+            
+            % NOT RELEVANT
+            % o	Forecasting
+            % o	Predictive Modeling
+            % o	Neural networks
+	
+	\vfill
+\end{abstract}
+
+
+
+\newpage % Blank page
+\thispagestyle{empty}
+\mbox{}
+
+
+
+\chapter*{Aknowledgements}
+\setcounter{page}{5}
+
+I would like to extend a special thank you to all of the open source contributors of the libraries that have made this project possible.
+
+
+
+\newpage % Blank page
+\thispagestyle{empty}
+\mbox{}
+
+
+
+%----------
+%	Dedication
+%----------	
+\chapter*{Dedication}
+\setcounter{page}{7}
+
+% Write here
+\noindent Dedicated to my late grandfather, who was not able to see me become an engineer like himself.\\
+To my amazing family.\\
+To my parents, that have always helped me push through hard moments.\\
+To my grandparents who will proudly see me become an engineer.\\
+To my amazing girlfriend that has supported me though all the ups and downs of life.\\
+To my all of friends and colleagues that have accompanied me these years.\\
+To anyone and everyone that has supported me during my years in university.\\
+
+\noindent Here is to the next steps in life.
+
+	\vfill
+
+
+
+\newpage % blank page
+\thispagestyle{empty}
+\mbox{}
+
+
+
+%--- Estructura de Emilio
+
+    % Acknowledgements
+    
+    % Dedication (to… mom dad gf grandparents my teacher etc)
+    
+    % Index
+    % 1.	Introduction
+    %     a.	Context (del problema)
+    %     b.	Motivation (de la solucion)
+    %     c.	Objectives
+    %     d.	Summary of the results
+    % 2.	Background
+    %     a.	Description of the different componentes que uso a modo sencillo - eg modelos etc
+    %     b.	ML
+    %     c.	Energia
+    % 3.	Proposal - si me cambian los datos este capitulo no deberia cambiar
+    %     a.	Theoretical system description - esto es como juntas estos componentes - la matriz, el feature selection, los modelos especificos
+    %     b. si es una limpieza generica en el tres
+    % 4.	Experimentation
+    %     a.	Data Description - descripcion de datos y parametros de los resultados - si es una limpieza especifica en el 4
+    %     b.	Set Up Explanation - para el RF que rangos de parametros voy a hacer, dias y profundidad, validacion cruzada etc
+    %     c.	Results 
+    %     d.	Low level discussion
+    % 5.	Conclusions
+    %     a.	Recap
+    %     b.	Revisit Objectives
+    %     c.	Future Work
+    %           - mejorar el error
+%----------
+
+
+
+%----------
+%	TOC
+%----------	
+
+\tableofcontents
+\thispagestyle{fancy}
+
+
+
+% BLANK PAGE
+\newpage % blank page
+\thispagestyle{empty}
+\mbox{}
+
+
+
+%----------
+% List of figures.
+%----------
+\listoffigures
+\thispagestyle{fancy}
+
+
+
+%----------
+% List of tables.
+%----------
+\listoftables
+\thispagestyle{fancy}
+
+
+
+%----------
+%	THESIS
+%----------	
+\clearpage
+\pagenumbering{arabic} % numbering with Arabic numerals for the rest of the document.	
+
+% IMPORTANT: Latex special characters are: # $ % & \ ^ _ { } ~. To avoid mistakes when compiling try writing \ before. For: \ use \textbackslash ; for ^ \textasciitilde and ~ \textasciicircum.
+
+% Start writing here----------------------------------------------------
+
+
+
+% Chapter 1 - introduction to the problem
+\chapter{Introduction to the problem}
+    \begin{itemize}
+    \item \textbf{1. Explanation of how the price of energy works in Spain}
+        \begin{itemize}
+        \item a. Energy
+        \item b. Prices
+        \end{itemize}
+    \item \textbf{2. Machine Learning - Lets run through some model overviews, which are available to choose, but without actually referencing anything}
+    \end{itemize}
+
+% We thought about different approaches such as Time-Series Forecasting, about Neural Networks but ...
+Energy has increasingly become more important with every passing year. Availability is key for a modern high functioning society such as the one we enjoy in Europe, where we are lucky to have a highly advanced and reliable network. Furthermore, electricity is a key resource needed to succeed in the ecological transition that we are currently undergoing world wide, to which electric mobility is a key element of the process. All electric vehicles need convenient and easily available sources of energy to recharge. These can range from electric cars, to buses and trucks, all of which need a to be able to play their role in society.
+
+An important factor in this ever growing necessity is the price of the available energy. But in recent times, that easy and affordable access has changed, and has become more unpredictable. Ever since the commencement of the war between Russia and Ukraine marked and inflection point in the mostly cyclical nature of electricity prices. Prices have gone up considerable in the past two years, and it has been affecting everyone, from big consumers such as companies to individual consumers, having to pay a more expensive electricity bill at the end of the month. This has become a topic of great concern, with society reflecting upon it more often.
+
+This led me to think about pricing, how it was structured, and what to expect as an end consumer. Can we plan our use of energy according to the price? Can the price be predicted accurately? These were some of the questions I had that sparked my interest in looking into energy predictions.
+
+
+
+% Get rid of all of this and discuss th
+In the initial discussions of this project, we talked about various ways to attack the problem at hand.
+We thought about a variety of systems but settled on a plan to explore the predictions with the more established methods of Machine Learning.
+This was done specially since it was a natural continuation of what was learned in the third year subject of Telematics Engineering, Modern Theory of Detection and Estimation.
+
+The first idea we developed was to separate out the project in 24 blocks, one for each hour block to predict.
+The reason behind splitting the data in 24 blocks was simple, we assumed that data between the same time slot across neighbor days, would be similar, or would follow a certain trend.
+
+Focusing on the innovation side of things, we decided to simplify the problem.
+Pivoting from creating an algorithm to predict hourly prices, to splitting that into the 24 blocks, and predicting a single one.
+We decided on the 14\textsuperscript{th} hour of each day, since irrespective of the day of the week, or holiday, it would always be a valley period.
+
+This kind of granular breaking up of data is similar to what a Random Forest does in order to absorb more details and create higher resolution predictions. We made this assumption based on the idea that it would simplify the project substantially.
+% This forced us to generalize our approach, creating a system to analyze and evaluate the data in 24 distinct blocks, figuring out the best matrix dimensions for our linear regression matrix.
+
+- In relation to the proposal: Talk about Emilio's background in investment banking at BBVA and his experience using Technical Analysis indicators to aid in model training.
+
+- Talk about the idea of using technical analysis for feature engineering
+
+
+
+% Chapter 2 - Background and Related Work: State of the Art
+\chapter{Background and Related work}
+% No need to set a section for General Background
+% \section{General Background} 
+How is the price of electricity set in Spain and Portugal?
+
+\url{https://www.omie.es/sites/default/files/inline-files/mercado_diario.pdf}
+
+LEER ARTICULO \cite{precio_electricidad_edem}
+%     \item Referencias de donde saco los datos
+For Iberian electricity market, the OMIE, which stands for \textit{Operador del Mercado Ibérico de Energía}, is the designated operator by the
+The wholesale price of electricity in Spain and Portugal is set by 
+
+\url{https://www.europex.org/members/omie-operador-do-mercado-iberico-de-energia/}
+
+What happens when new producers enter the market and sell to the energy pool?
+
+Comment about more typical case studies focusing on energy consumption, since that is something more consistent and predictable
+
+
+% \section{The Sliding Window Approach}
+\section{Training a Non-Stationary Dataset with a Sliding Window Approach}
+% \section{Training Machine Learning Models on a Sliding Window Approach}
+% Describir tecnologias – explicar mas en detalle como funciona y enlaces a donde pueda averiguar el contenido
+
+Traditional machine learning models are usually trained on a fix set of data, that is split into various subsets to ensure proper training and evaluation. Starting with the \textit{training set}, which is the largest portion of the dataset and is used to train the model. The algorithm learns patterns, weights, and relationships within the data during this phase. The model’s internal parameters are adjusted based on this set.
+
+The \textit{validation set} is used during model development to fine-tune hyperparameters and assess the model’s performance on unseen data. It helps detect overfitting, which is when a model performs well on the training data but poorly on new data. The validation set guides model optimization choices without touching the final evaluation set.
+
+The \textit{test set} is strictly separate from the others. It is held out until the end of the training process, to be used to evaluate the final model’s generalization capability. It provides an unbiased estimate of how the model will perform on truly unseen data, simulating real-world deployment conditions.
+
+In the context of this project, the dataset is an energy price time series, which is not directly compatible with the standard training methodology, as over time the dataset characteristics might shift, making an arbitrary training set useless. This is because the considered time series is \textit{}{non-stationary}.
+
+The proposed solution to mitigate the \textit{}{non-stationary} nature of the dataset, is to progressively change our training set. The way of doing this is by creating a \textit{sliding window} of data points that will compose the training set. This sliding window will determine the number of past data points that are relevant for the next prediction, since we will be effectively transforming the data set into a \textit{stationary} one.
+
+To work with this approach, the training set will be the entirety of the data points contained in the desired sliding window, and the test set will be the following row of data points (price values and features), which will be used to make the next prediction. Essentially, a new model will be created to make the following prediction, being discarded in favor of a new, slightly different model for the next prediction.
+
+
+% What algorithms will I use?
+\section{Employed Machine Learning Models}
+
+The model selection for the project will consist of three models: the Linear Regressor, the Lasso Regressor, and the Random Forest Regressor.
+
+- Linear Regressor: \url{https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html}
+% Ordinary least squares Linear Regression.
+
+% LinearRegression fits a linear model with coefficients w = (w1, …, wp) to minimize the residual sum of squares between the observed targets in the dataset, and the targets predicted by the linear approximation.
+
+
+- Lasso Regression: \url{https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html}
+
+The regularization strength alpha controls how much the model penalizes large coefficients. Larger alpha, means more shrinkage (simpler model, potentially more bias).
+
+
+% Linear Model trained with L1 prior as regularizer (aka the Lasso).
+
+% The optimization objective for Lasso is:
+
+% (1 / (2 * n_samples)) * ||y - Xw||^2_2 + alpha * ||w||_1
+
+% Technically the Lasso model is optimizing the same objective function as the Elastic Net with l1_ratio=1.0 (no L2 penalty).
+
+
+% The algorithm used to fit the model is coordinate descent.
+
+% To avoid unnecessary memory duplication the X argument of the fit method should be directly passed as a Fortran-contiguous numpy array.
+
+% Regularization improves the conditioning of the problem and reduces the variance of the estimates. Larger values specify stronger regularization. Alpha corresponds to 1 / (2C) in other linear models such as LogisticRegression or LinearSVC. If an array is passed, penalties are assumed to be specific to the targets. Hence they must correspond in number.
+
+% The precise stopping criteria based on tol are the following: First, check that that maximum coordinate update, i.e. 
+%  is smaller than tol times the maximum absolute coefficient, 
+% . If so, then additionally check whether the dual gap is smaller than tol times
+% .
+
+% The target can be a 2-dimensional array, resulting in the optimization of the following objective:
+
+% (1 / (2 * n_samples)) * ||Y - XW||^2_F + alpha * ||W||_11
+
+% where 
+%  is the sum of the magnitude of the matrix coefficients. It should not be confused with MultiTaskLasso which instead penalizes the 
+%  norm of the coefficients, yielding row-wise sparsity in the coefficients.
+
+
+- Random Forest: \url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html}
+% A random forest regressor.
+
+% A random forest is a meta estimator that fits a number of decision tree regressors on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. Trees in the forest use the best split strategy, i.e. equivalent to passing splitter="best" to the underlying DecisionTreeRegressor. The sub-sample size is controlled with the max_samples parameter if bootstrap=True (default), otherwise the whole dataset is used to build each tree.
+
+% For a comparison between tree-based ensemble models see the example Comparing Random Forests and Histogram Gradient Boosting models.
+
+
+\section{Model Optimization: Hyperparameter Tuning and Feature Engineering}
+
+\textit{Hyperparameter tuning} or \textit{optimization} refers to the process of optimizing the model's training configuration parameters. These are parameters that are not learned from the data during the model training process, they are set before the training process begins and determine how the learning process of the model will develop. For \textit{Lasso} Regression, \textit{alpha} is a hyperparameter that controls the strength of the regularization. For \textit{RandomForest}, \verb|n_estimators| (number of trees) and the \verb|max_depth| (maximum depth of each tree), are a couple of it's hyperparameters. These values for any given model, and the dataset employed in its training, must be experimented in order to find the values that result in the best model performance (e.g., lowest error, highest accuracy) \cite{AWSHyperparameterTuning}.
+
+% \verb|min_samples_leaf| (minimum number of samples required to be at a leaf node), and \verb|max_features| are all hyperparameters.
+
+\textbf{TODO:} Reference academic book:
+\url{https://www.microsoft.com/en-us/research/wp-content/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf}
+
+% \textit{Feature Engineering} and \textit{Feature Selection}
+\textit{Feature Engineering} is a crucial step in preparing, and expanding the dataset for training machine learning models. In this project, a particular approach involving \textit{Feature Engineering with Technical Analysis} will be used, creating descriptive features based on the raw price data. Technical analysis, is a methodology for interpreting and analyzing price movements using statistical data and historical patterns to make more accurate predictions \cite{britannica_ta}. This involves generating technical indicators such as moving averages and indicators for momentum or volatility.
+
+\textbf{TODO:} Reference academic book /article of Technical Analysis
+
+These indicators are not just arbitrary transformations, they are intended to capture the inherent patterns and temporal information implicitly embedded inside the raw price series, theoretically reducing the need for complex time series models. The intention of generating these highly informative features, is to improve the robustness of the machine learning models, as the indicators should encode valuable predictive signals. This allows for a more straightforward model architecture while attempting to leverage the rich temporal dynamics of the data, as proven in other fields such as financial data analysis.
+
+% SMA, EMA, ROC, RSI, BBWidth \& ATR
+A variety of technical indicators such as \textit{SMA}, \textit{EMA}, \textit{ROC}, \textit{RSI}, \textit{BBWidth} \& \textit{ATR} will be used. The \textit{Simple Moving Average} will be used with a variety of window sizes. A shorter SMA could be useful to identify short-term trends in energy prices, capturing recent price movements, while a longer SMA could be useful to capture long-term trends in energy prices, helping identify the overall direction of the market. The \textit{Exponential Moving Average} is similar to a simple moving average, but with the key difference being that it gives more weight to recent prices. This could be valuable to capture more immediate trends in energy prices. We will use the following \textit{trend-following} indicators:
+
+    $ SMA_{3},\ SMA_{5},\ SMA_{7},\ SMA_{14},\ SMA_{30},\ SMA_{90},\ SMA_{180} $
+    
+    $ EMA_{3},\ EMA_{5},\ EMA_{7},\ EMA_{14},\ EMA_{30}  $
+
+To measure momentum the price \textit{Rate of Change} measures the percentage change between the current price and a price from a previous time period (e.g., 1 day, 7 days ago). It helps identify momentum in the market and is useful to highlight trends or sudden shifts in energy prices. Additionally, the \textit{Relative Strength Index} is another momentum indicator. It is mainly a financial data point that can identify overbought or oversold conditions in the financial markets. Regarding its usage in the energy markets, the intention is it to track whether the price is approaching extreme values, which could indicate a reversal. We will use the following \textit{momentum} indicators:
+
+    $ ROC_{3},\ ROC_{5},\ ROC_{7},\ ROC_{14},\ ROC_{30} $
+    
+    $ RSI_{5},\ RSI_{7},\ RSI_{14},\ RSI_{30} $
+
+Finally, to measure volatility we employ indicators such as the Bollinger Band Width and the Standard Deviation. 
+We will use the following \textit{volatility} indicators:
+
+    $ BBWidth_{7},\ BBWidth_{14} $
+    
+    $ STD_{7},\ STD_{14},\ STD_{30},\ STD_{90} $
+
+
+\section{Evaluation Metrics}
+
+% How will I measure my accuracy?
+% Model accuracy will be measured with a variety errors:
+To evaluate the predictive performance of the models, a combination of statistical metrics that quantify how closely the predictions align with actual values will be employed. Evaluating using multiple indicators ensures a robust and comprehensive assessment, mitigating the risk of overfitting to a single metric, and providing a deeper understanding of both average-case and worst-case predictive behavior. This multi-metric evaluation framework is essential for iteratively refining the model and selecting the optimal sliding window, and set of hyperparameters.
+
+% MAE - key measurement done in each iteration to find the optimal hyperparamenters
+The \textit{Mean Absolute Error} (MAE) serves as a primary accuracy metric throughout the model development. It calculates the average absolute difference between predicted and actual values, in the same units as the target variable (€/MWh in this context). It offers a simple interpretation of how much, on average, the predictions deviate from reality. Since the MAE treats positive and negative errors equally, it provides a balanced view of model accuracy, which is particularly useful for the hyperparameters tuning process across iterations of the same sliding window. Its simplicity makes it ideal for tracking the performance of each parameter as the and the model training advances along the time series. The formula for the MAE is defined as:
+\[
+\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} \left| y_i - \hat{y}_i \right|
+\]
+where \( y_i \) is the true value, \( \hat{y}_i \) is the predicted value, and \( n \) is the total number of observations.
+
+% MSE: Mean Squared Error
+The \textit{Mean Squared Error} (MSE) serves as a second core performance indicator. Unlike the MAE, the MSE penalizes larger errors more heavily, by squaring the differences between predicted and actual values, highlighting outliers or poor predictions. This characteristic makes the MSE particularly effective in identifying models that may perform well on average, but fail under certain conditions. It is especially useful in diagnosing issues related to overfitting or inadequate generalization. The formula for the MSE is defined as follows:
+\[
+\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} \left( y_i - \hat{y}_i \right)^2
+\]
+
+% ($R^2$): R-squared
+The \textit{coefficient of determination}, denoted as $R^2$, provides an intuitive measure of how well the model explains the variance in the target variable. An $R^2$ value close to 1 suggests that the model captures most of the variability in the data, while a value near 0 indicates a weak correlation between the input features and the target variable. This metric is particularly helpful when comparing multiple models or evaluating the effectiveness of adding additional data points with feature engineering, as it gives a high-level summary of the overall model fit. The coefficient of determination (\( R^2 \)) may be calculated with the following formula:
+\[
+R^2 = 1 - \frac{\sum_{i=1}^{n} \left( y_i - \hat{y}_i \right)^2}{\sum_{i=1}^{n} \left( y_i - \bar{y} \right)^2}
+\]
+where \( \bar{y} \) is the mean of the observed values.
+
+% Prediction Percentiles:
+Beyond average errors, the prediction accuracy can be also evaluated in terms of \textit{percentiles} to understand how well the model performs across different segments of the distribution. For instance, checking the 70th, 80th, and 90th percentiles of error allows for an assessment of both typical and extreme prediction behaviors. This adds granularity to the evaluation process, highlighting whether the model is consistently accurate or only performs well under specific conditions. The percentiles will be calculated as the top performers in a given range, meaning only the example, 70\%, 80\% or 90\% of most accurate predictions would be considered.
+% \[
+% \varepsilon_i = \left| y_i - \hat{y}_i \right| \quad \text{and} \quad \text{Percentile}_p = \text{ECDF}^{-1}(p)
+% \]
+% where \( p \in [0, 1] \) is the desired percentile level (e.g., 0.10, 0.50, 0.90).
+
+% Expectation shortfall - Cuando se me pira, cuanto? Limitado a 0 y 1000 ? Disingenuous?
+Pivoting from the best percentiles, to the worst, the concept of \textit{expectation shortfall}, commonly used in financial risk analysis, was included as a measure of tail risk in model predictions. This metric calculates the average prediction error among the worst-performing cases (e.g., the top 5\% of errors), providing a quantitative estimate of the magnitude of extreme failures. In the context of energy prices, it helps us quantify how bad the prediction is when it fails, specially with over-estimations by hundreds of euros per MWh, since under-estimations shall be treated as 0, as we will work with the assumption that the price is not typically negative. For this application, the expectation shortfall may be upper bounded with a domain-specific limit (e.g. 1000 €/MWh) to avoid distortion from implausible outlier predictions. This measure adds a risk-aware perspective to the model evaluation, ensuring that occasional large errors are accounted.
+% \textbf{Expectation Shortfall (CVaR)} represents the expected value of the prediction error conditional on the error exceeding a given quantile threshold:
+% \[
+% \text{CVaR}_{\alpha} = \mathbb{E} \left[ \varepsilon \mid \varepsilon \geq \text{VaR}_{\alpha} \right]
+% \]
+% where \( \text{VaR}_{\alpha} \) is the \( \alpha \)-quantile (e.g., 95th percentile) of the error distribution \( \varepsilon \).
+
+\section{Related Work}
+% Articles that reference energy prices prediction as an inspiration for my own work:
+%     5-10 articles that do/talk about similar things
+%     Energy consumption predictions
+%     Energy prices in other European countries (Italy, Germany, UK, France)
+%     Longer term predictions
+%     Predicciones de produccion
+
+Other ways of predicting energy prices instead of Machine Learning algorithms
+
+LTSMs - Temporal Series?
+
+Energy consumption predictions?
+
+
+%----------------------------------
+
+
+
+% Chapter 3 - Proposal: System Description
+\chapter{Proposal: System Description}
+
+This chapter outlines the design of the system developed for the project, describing the complete \textit{data processing pipeline} that was constructed. This will be explained starting from a blank state, detailing the complete set-up process required to run the project. Following this initial configuration, the data preparation stage will be outlined. This will be continued by the feature matrix creation process, concluding with the training of the machine learning models and the chosen evaluation method.
+
+The following block diagram models the design of the system pipeline design in its most basic form:
+
+% Contar los bloques empleados en cada parte – como junto las piezas para construir el sistema – mas adelante porque uso las piezas que uso
+
+% 1 Retrieve Data from OMIE
+% 2 Ingest data and create a CSV DB
+% 3 Verify and Clean up the DB
+% 4 Calculate Technical Indicators
+% 5 Create Sliding Window Matrix for use in training that batch
+% 6 Train the batch
+% 7 Check out predictions of each mini-model with actual energy price for that time slot
+% 8 Review error rates and compare with other iterations/ batches and other models. (part of Chapter 4)
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+    
+    % Styles
+    \tikzstyle{process} = [rectangle, minimum width=3.5cm, minimum height=1cm, text centered, draw=black, fill=blue!10]
+    % \tikzstyle{process} = [rectangle, minimum width=3.5cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{arrow} = [thick,->,>=Stealth]
+
+    % Nodes
+    \node (retrieve) [process] {Retrieve Data from OMIE};
+    \node (ingest) [process, below of=retrieve] {Ingest Data and Create CSV DB};
+    \node (clean) [process, below of=ingest] {Verify and Clean up the DB};
+    \node (indicators) [process, below of=clean] {Calculate Technical Indicators};
+    \node (matrix) [process, below of=indicators] {Create Sliding Window Matrix};
+    \node (train) [process, below of=matrix] {Train the Batch};
+    \node (predict) [process, below of=train] {Check Predictions vs Actual Price};
+    \node (review) [process, below of=predict] {Review Errors \& Compare Models};
+
+    % Arrows
+    \draw [arrow] (retrieve) -- (ingest);
+    \draw [arrow] (ingest) -- (clean);
+    \draw [arrow] (clean) -- (indicators);
+    \draw [arrow] (indicators) -- (matrix);
+    \draw [arrow] (matrix) -- (train);
+    \draw [arrow] (train) -- (predict);
+    \draw [arrow] (predict) -- (review);
+
+    % Group boxes
+    \node[draw=black, thick, dashed, fit={(retrieve)(ingest)(clean)}, inner sep=0.4cm, label=above:{\textbf{Data Ingestion \& Cleanup}}] {};
+        \node[draw=black, thick, dashed, fit={(indicators)(matrix)}, inner sep=0.4cm, label=right:{\textbf{Feature Engineering}}] {};
+    \node[draw=black, thick, dashed, fit={(train)(predict)(review)}, inner sep=0.4cm, label=below:{\textbf{Model Training \& Evaluation}}] {};
+
+    \end{tikzpicture}
+    \caption{Theoretical Block Diagram of the Project Pipeline}
+    \label{fig:block_diagram_pipeline}
+\end{figure}
+
+
+% Intro and preparation for the actual body of work
+\section{Prior Set Up and Configuration}
+% \textbf{Prior Set Up and Configuration}
+
+Before getting into the system explanation, there are some important pre-requisites that must be met in order to run the project. The project was developed and tested with Python 3.13 \cite{python3.13}, so for any recreation of the project, it is highly recommendable to use the same version. For additional assurance of reproducibility, and as a universal best practice for Python development, it is strongly advisable to set up a new virtual environment \cite{python_venv}. Alternatively, another system that would achieve the same goal of reproducibility, and dependency conflict avoidance would be the use of Miniconda \cite{conda}. In this project, the built in Python module \textit{venv} was chosen, with which a virtual environment can be easily created and configured with the project dependencies using the following commands.
+
+\noindent Create the virtual environment:
+\begin{verbatim}
+python -m venv .venv
+\end{verbatim}
+
+\noindent Activating the new virtual environment:
+\begin{verbatim}
+in macOS
+source .venv/bin/activate
+
+in Windows
+.venv\Scripts\Activate.ps1
+\end{verbatim}
+
+\noindent To reproduce the exact environment used in the project, a \textit{requirements.txt} file must be created with the following contents:
+\begin{verbatim}
+ipykernel==6.29.5
+matplotlib==3.10.1
+numpy==2.2.3
+pandas==2.2.3
+requests==2.32.3
+scikit-learn==1.6.1
+ta==0.11.0
+\end{verbatim}
+
+\noindent To install the dependencies run:
+\begin{verbatim}
+pip install -r requirements.txt 
+\end{verbatim}
+
+% Should I write this in the backgorund part, or the software and licenses part?
+These libraries were specifically selected to aid in the development of the project. Most of the project was written in Jupyter Notebooks, which are dependent on the \textit{ipykernel} package. To aid in the retrieval of the data, the \textit{requests} package was used to execute HTTP requests. For the manipulation of the data points, \textit{pandas} was used to house the data structures, \textit{numpy} for mathematical operations using arrays, and the \textit{ta} technical analysis library was used to compute the technical indicators. Finally the machine learning algorithms were provided by the \textit{scikit-learn} library.
+
+Following the completion of this prior set up required for the project, the next sections will detail in depth the different steps involved in the system pipeline.
+
+% Three main blocks: create three sections
+
+
+% Data ingestion and cleanup
+\section{Data Preparation: Ingestion and Cleanup}
+
+% General idea as a summary of what is needed in this part??
+
+% 1. Download of OMIE data (only section independent of the whole system)
+The first step in any data preparation process would be to retrieve the raw data from the original source, in this case this means downloading it from the OMIE. It is publicly available data easily discoverable through their webpage \cite{omie_datos}. The data collected was all that was initially available towards the end of 2024, with some extraordinary retrievals done later on in 2025 to further complete the set with more data points.
+
+In this scenario, it meant retrieving data from 2018 onward. While for the 5 first years available the data was self contained in a compressed archive file, the rest from 2023 to our current 2025 was not. This meant that to retrieve the files, manually downloading each resource was required. In order to streamline this process, a short Python script was created to build the necessary URIs to retrieve the files with an HTTP GET request.
+
+The following Python script was written with modularity in mind for ease of use. It firstly creates the filenames according to the OMIE's file naming convention, inserting them into a list. This list is essential to successfully build the URIs with which the HTTP GET request will be made. Finally the function \small{\verb|download_files(urls)|} makes the request, retrieving the files.
+
+% Insert the python script?? or better suited for an annex??
+\begin{lstlisting}
+import requests
+from datetime import datetime, timedelta
+
+# Usage instructions:
+    # Set file name to save the filenames to download
+    # Set start and end dates
+
+file_path = 'to_download.txt'
+start_date = datetime(2023, 1, 1)
+end_date = datetime(2025, 3, 18)
+
+# Compose filenames to download
+def compose_filenames():
+    start_date = start_date
+    end_date = end_date
+    
+    # Generate the entries for the number of days comprehended
+    to_generate = (end_date - start_date).days + 1
+    entries = []
+    for i in range(0, to_generate):  # x days from start to end
+        date_entry = start_date + timedelta(days=i)
+        entries.append(f'marginalpdbc_{date_entry.strftime("%Y%m%d")}.1')
+    
+    # Save to a .txt file
+    with open(file_path, 'w') as file:
+        for entry in entries:
+            file.write(entry + '\n')
+
+# Example URI to build
+# https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename=marginalpdbc_20230102.1
+def read_filenames_and_compose_urls(file_path):
+    base_url = "https://www.omie.es/es/file-download?parents%5B0%5D=marginalpdbc&filename="
+    
+    # Read the filenames from the .txt file
+    with open(file_path, 'r') as file:
+        filenames = [line.strip() for line in file if line.strip()]
+    
+    # Compose the URLs
+    urls = [base_url + filename for filename in filenames]
+    
+    return urls
+
+def download_files(urls):
+    for url in urls:
+        # Extract the filename from the URL
+        filename = url.split('=')[-1]
+        
+        # Send a GET request to download the file
+        response = requests.get(url)
+        
+        # Check if the request was successful and write to file
+        if response.status_code == 200:
+            # Write the content to a file with the extracted filename
+            with open(filename, 'wb') as file:
+                file.write(response.content)
+            print(f"Downloaded {filename}")
+        else:
+            print(f"Failed to download {filename}")
+
+# Execution
+compose_filenames()
+urls = read_filenames_and_compose_urls(file_path)
+download_files(urls)
+\end{lstlisting}
+
+% 2. Data Organization
+The newly downloaded raw data was manually organized into its corresponding folder per year. An example filename is the following: \small{\verb|marginalpdbc_20230102.1|}. This is an important organizational step for the ingestion of the data, as the next procedure involves a script that iterates through these folders, identifying all files that start with \small{\verb|marginalpdbc_|}, and parsing them into an easier to use form, a Pandas DataFrame \cite{dataframe}.
+
+% 3. Initial Data Cleanup
+When a valid file is identified while iterating through the \textit{year} folders, the script reads its content. It will perform some cleanup steps, such as removing the first and last rows which are a standard header and footer across all files. It then parses the remaining data, which is separated by semicolons, into a Pandas DataFrame for that specific day. It will name the columns to \textit{Year}, \textit{Month}, \textit{Day}, \textit{Hour}, \textit{MarginalPT} (Portuguese Energy Price), and \textit{MarginalES} (Spanish Energy Price). It will also filter out any rows where the \textit{Year} column is not a digit, ensuring data integrity. The columns are then converted to their appropriate data types, \textit{integers} for date/time components and \textit{}{floats} for marginal prices. Each processed daily dataset is then temporarily stored in a list.
+
+% 4. Retention of only the relevant data: Datetime and MarginalES
+After processing all the individual files, the script concatenates all the daily data from the list of DataFrames into a single, comprehensive DataFrame. It will then construct a \textit{Datetime} column built from the \textit{Year}, \textit{Month}, \textit{Day}, and \textit{Hour} columns. It will also handle some peculiar cases where an \textit{Hour} value of 25 might appear (likely due to daylight savings time zone adjustments) by converting it to 0. This \textit{Datetime} column is then set as the DataFrame's index. Finally, it removes the individual date and hour columns as well as the \textit{MarginalPT} column, leaving only the \textit{MarginalES} as the primary target variable, along with the \textit{Datetime} index.
+
+% 5. Final Data Cleanup and Storage
+This clean and combined dataset will be saved as a CSV file for ease of use, \small{\verb|raw_data.csv|}. The script then performs further data cleanup by reloading the \small{\verb|raw_data.csv|}, and sorting it by \textit{Datetime}, saving it as \small{\verb|processed_data.csv|}. The whole process concludes by verifying the completeness of the hourly timestamps within the processed data, generating the full range of hourly timestamps that should be there, and checking for any discrepancies. If no missing timestamps are found, it confirms successful data processing; otherwise, it reports the missing timestamps, indicating an error in the data collection or processing.
+
+For the previous in-depth explanation, you may find the of Python script that was created for the desired data ingestion and cleanup tasks:
+\begin{lstlisting}
+import pandas as pd
+import os
+
+# Base path to the folder containing the year by year data folders
+base_path = '../TFG/data/'
+
+# Initialize an empty list to store DataFrames
+all_data = []
+
+# Iterate through each year folder and process all files
+for root, dirs, files in os.walk(base_path):
+    for file in files:
+        # Check if the file starts with 'marginalpdbc_' (ignoring the rest, including the extension)
+        if file.startswith('marginalpdbc_'):
+            
+            # Read the file
+            file_path = os.path.join(root, file)
+            with open(file_path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+
+            # Remove the first line (MARGINALPDBC;) and the last line (*)
+            data_lines = lines[1:-1]
+            
+            # Convert the list of semicolon-separated strings into a DataFrame
+            daily_data = pd.DataFrame([line.strip().split(';') for line in data_lines])
+            
+            # Remove trailing ';' from the last column
+            if daily_data.shape[1] > 6:
+                # Drop empty columns
+                daily_data = daily_data.iloc[:, :6]
+            
+            # Assign column names
+            daily_data.columns = ['Year', 'Month', 'Day', 'Hour', 'MarginalPT', 'MarginalES']
+            
+            # Remove rows with invalid data (in case accidental empty rows, or non-numeric values, get included)
+            daily_data = daily_data[daily_data['Year'].str.isdigit()]  # Only keep rows where 'Year' is a number
+            
+            # Convert the columns to the appropriate data types
+            daily_data = daily_data.astype({
+                'Year': int, 'Month': int, 'Day': int, 'Hour': int, 'MarginalPT': float, 'MarginalES': float
+                })
+            
+            # Append daily data to the list
+            all_data.append(daily_data)
+
+# Concatenate all daily DataFrames into one big DataFrame
+full_data = pd.concat(all_data, ignore_index=True)
+
+# Create a datetime column from Year, Month, Day, and Hour
+# Adjust the 'Hour' column to deal with the potential 25th hour issue in case of timezone adjustment
+full_data['Hour'] = full_data['Hour'].apply(lambda x: 0 if x == 25 else x)
+full_data['Datetime'] = pd.to_datetime(full_data[['Year', 'Month', 'Day', 'Hour']], errors='coerce')
+
+# Set the 'Datetime' column as the index
+full_data.set_index('Datetime', inplace=True)
+
+# Drop the now unnecessary time columns and 'MarginalPT', as we are focusing on the Spanish market
+full_data.drop(['Year', 'Month', 'Day', 'Hour', 'MarginalPT'], axis=1, inplace=True)
+
+# Save the full dataset to a CSV file
+full_data.to_csv('../../data/raw_data.csv')
+
+# Post-ingest database cleanup:
+# Load and sort the data by the 'Datetime', and save the sorted data to a new file
+df = pd.read_csv('../../data/raw_data.csv')
+df = df.sort_values(by='Datetime')
+df.to_csv('../../data/processed_data.csv', index=False)
+
+# Read the CSV file
+df = pd.read_csv('../../data/processed_data.csv')
+df['Datetime'] = pd.to_datetime(df['Datetime']) # Parse 'Datetime' column to datetime objects
+
+# Generate the complete range of hourly timestamps
+full_range = pd.date_range(start=df['Datetime'].min(), end=df['Datetime'].max(), freq='h')
+
+# Find any missing timestamp
+missing_timestamps = full_range.difference(df['Datetime'])
+
+# If successful, print a message
+if missing_timestamps.empty:
+    print("Data ingestion completed successfully.")
+
+# Else, print an error message
+else:
+    print("Error: Missing timestamps found. Check the data.")
+    print("Missing timestamps:\n missing_timestamps")
+
+    print("Data ingestion completed with errors.")
+\end{lstlisting}
+
+After completing this ingestion and cleanup process, the dataset will be reduced to just the 14\textsuperscript{th} hour data point. The following code will create a the final database file, which will house the singular \textit{Datetime} value, and the \textit{MarginalES} data point:
+
+\begin{lstlisting}
+import pandas as pd
+
+# Load the original dataset
+data_path = '../../data/processed_data.csv'
+df = pd.read_csv(data_path, parse_dates=['Datetime'])
+
+# Define the hour to predict and filter down to the 14:00H data point
+hour_to_predict = 14
+df_hour = df[df['Datetime'].dt.hour == hour_to_predict].copy()
+
+# Save the final database
+df_hour.to_csv("../../data/hour_14_metrics.csv", index=False)
+\end{lstlisting}
+
+To aid in the predictions, the dataset is enhanced with more features. We can calculate a variety of different metrics to aid the training of the model. These can range from simple metrics such as the day of the week, the month of the year, or if that day is a weekend or not, to more complex, such as technical indicators. By adding these auxiliary points of data derived from \textit{technical analysis}, we can further expand the context size that our models will be able to learn from, ideally improving their prediction accuracy capabilities.
+
+To generate these additional features, and the strategically chosen technical indicators, the main database \small{\verb|processed_data.csv|} is read into a DataFrame that will be progressively expanded with new feature columns as the respective metrics are calculated. The resulting DataFrame will be saved to a secondary database \small{\verb|ta_metrics_hour_14.csv|}. The following code is an example of the process that was employed to calculate the different indicators, using the open source Python library \textit{ta} \cite{ta-lib}:
+
+\begin{lstlisting}
+import pandas as pd
+import ta  # bukosabino's Technical Analysis Library
+import numpy as np
+
+# Load the data
+data_path = 'data/processed_data.csv'
+df = pd.read_csv(data_path, parse_dates=['Datetime'])
+
+# Reduce dataset to only to the 14th hour
+hour_to_predict = 14
+df = df[df['Datetime'].dt.hour == hour_to_predict].copy()
+
+# The "window" parameter is measured in days
+
+# Trend-following - SMA and EMA
+# Simple Moving Average
+df[f'SMA_{3}'] = ta.trend.SMAIndicator(close=df['MarginalES'], window=3).sma_indicator()
+df[f'SMA_{5}'] = ta.trend.SMAIndicator(close=df['MarginalES'], window=5).sma_indicator()
+df[f'SMA_{7}'] = ta.trend.SMAIndicator(close=df['MarginalES'], window=7).sma_indicator() # past week trend
+df[f'SMA_{14}'] = ta.trend.SMAIndicator(close=df['MarginalES'], window=14).sma_indicator()
+df[f'SMA_{30}'] = ta.trend.SMAIndicator(close=df['MarginalES'], window=30).sma_indicator() # past month trend
+df[f'SMA_{90}'] = ta.trend.SMAIndicator(close=df['MarginalES'], window=90).sma_indicator()
+df[f'SMA_{180}'] = ta.trend.SMAIndicator(close=df['MarginalES'], window=180).sma_indicator() # past half year trend
+
+# Exponential Moving Average
+df[f'EMA_{3}'] = ta.trend.EMAIndicator(close=df['MarginalES'], window=3).ema_indicator()
+df[f'EMA_{5}'] = ta.trend.EMAIndicator(close=df['MarginalES'], window=5).ema_indicator()
+df[f'EMA_{7}'] = ta.trend.EMAIndicator(close=df['MarginalES'], window=7).ema_indicator()
+df[f'EMA_{14}'] = ta.trend.EMAIndicator(close=df['MarginalES'], window=14).ema_indicator()
+df[f'EMA_{30}'] = ta.trend.EMAIndicator(close=df['MarginalES'], window=30).ema_indicator()
+
+# Momentum - Rate of Change (ROC) and RSI
+# Rate of Change
+df[f'ROC_{3}'] = ta.momentum.ROCIndicator(close=df['MarginalES'], window=3).roc()
+df[f'ROC_{5}'] = ta.momentum.ROCIndicator(close=df['MarginalES'], window=5).roc()
+df[f'ROC_{7}'] = ta.momentum.ROCIndicator(close=df['MarginalES'], window=7).roc()
+df[f'ROC_{14}'] = ta.momentum.ROCIndicator(close=df['MarginalES'], window=14).roc()
+df[f'ROC_{30}'] = ta.momentum.ROCIndicator(close=df['MarginalES'], window=30).roc()
+
+# Relative Strength Index
+df[f'RSI_{5}'] = ta.momentum.RSIIndicator(close=df['MarginalES'], window=5).rsi() # rapid momentum changes
+df[f'RSI_{7}'] = ta.momentum.RSIIndicator(close=df['MarginalES'], window=7).rsi()
+df[f'RSI_{14}'] = ta.momentum.RSIIndicator(close=df['MarginalES'], window=14).rsi() # biweekly momentum
+df[f'RSI_{30}'] = ta.momentum.RSIIndicator(close=df['MarginalES'], window=30).rsi()
+
+# Volatility - Bollinger Bands Width and Standard Deviation
+# BB Width (Bollinger Bands Width)
+df['BB_Width_7'] = ta.volatility.BollingerBands(close=df['MarginalES'], window=7, window_dev=2).bollinger_wband()
+df['BB_Width_14'] = ta.volatility.BollingerBands(close=df['MarginalES'], window=14, window_dev=2).bollinger_wband()
+
+# Standard Deviation (STD)
+df['STD_7'] = df['MarginalES'].rolling(window=7).std()
+df['STD_14'] = df['MarginalES'].rolling(window=14).std()
+df['STD_30'] = df['MarginalES'].rolling(window=30).std()
+df['STD_90'] = df['MarginalES'].rolling(window=90).std()
+
+# Additional contextual features
+df['month'] = df['Datetime'].dt.month
+df['day_of_week'] = df['Datetime'].dt.dayofweek  # Monday=0
+df['is_weekend'] = df['day_of_week'].isin([5, 6]).astype(int)
+
+# Drop missing values generated by rolling calculations
+df.dropna(inplace=True)
+
+# Check for NaN or infinity values (specially in ROC)
+print("NaN values per column:\n", df.isna().sum())
+print("Infinity values per column:\n", df.isin([np.inf, -np.inf]).sum())
+
+# Drop NaN or infinity values and interpolate
+df = df.replace([np.inf, -np.inf], np.nan).dropna()
+df = df.interpolate()
+
+# Save the dataset with metrics
+df.to_csv(f'data/ta_metrics/final_price_ta_metrics.csv', index=False)
+\end{lstlisting}
+
+
+% The Feature Matrix for the Sliding Window Approach
+\section{The Feature Matrix Creation}
+
+% Theory behind feature matrices:
+The creation of a \textit{feature matrix} is a key step in the process of training a supervised learning model. In this context, the objective is to structure historical energy price data into a form that can be used effectively to predict future prices. This transformation of the raw data is critical when dealing with time-series data using traditional machine learning models, since observations must be ordered correctly in time as they often exhibit autocorrelation.
+
+The intent of building the feature matrix consists on creating one unique matrix that can be used across any desired model. The feature matrix denoted as $\mathit{X}$, represents the input data used to train the model, while the target / label vector $\mathit{y}$ contains the values the model is intended to learn how to predict.
+
+For a given time series \textit{T}:
+\begin{equation*}
+{T} = \begin{Bmatrix}
+t_1 \\
+t_2 \\
+t_3 \\
+t_4 \\
+t_5 \\
+t_6
+\end{Bmatrix} = \begin{Bmatrix}
+x_1 \\
+x_2 \\
+x_3 \\
+x_4 \\
+x_5 \\
+x_6
+\end{Bmatrix}
+\end{equation*}
+
+Its simple feature matrix can be represented as:
+\begin{equation*}
+{X} = \begin{Bmatrix}
+x_1 & x_2 & x_3 \\
+x_2 & x_3 & x_4 \\
+x_3 & x_4 & x_5
+\end{Bmatrix}, \quad
+{y} = \begin{Bmatrix}
+y_1 \\
+y_2 \\
+y_3
+\end{Bmatrix}
+\end{equation*}
+
+Where each row of $\mathit{X}$ corresponds to a window of past values, and its corresponding label $\mathit{y}$ is the value that follows that window, which would be the actual energy price for the current day:
+\begin{align*}
+y_1 &= x_4 \\
+y_2 &= x_5 \\
+y_3 &= x_6
+\end{align*}
+
+This setup reflects the temporal dependency in the time-series data, where future values are predicted based on a certain number of past observations. This approach allows the machine learning models to "learn" these implicit patterns in the considered sliding window, enabling them to better predict the next value.
+
+Incorporating technical analysis indicators into the feature matrix introduces additional information such as moving averages or the rate of change calculated over historical price windows, These enrich the model’s inputs and are added as extra columns to the feature matrix:
+
+\begin{equation*}
+{X} = \begin{Bmatrix}
+x_1 & x_2 & x_3 & ta_{11} & ta_{21} & \cdots & ta_{n1}\\
+x_2 & x_3 & x_4 & ta_{12} & ta_{22} & \cdots & ta_{n2}\\
+x_3 & x_4 & x_5 & ta_{13} & ta_{23} & \cdots & ta_{n3}
+\end{Bmatrix}
+\end{equation*}
+
+Where:
+\begin{itemize}
+    \item $x_i$ are raw price values from previous time steps,
+    \item $n$ is the number of indicators,
+    \item $ta_{ji}$ is the value of the $j$-th technical indicator computed based on the last price input of row $i$, i.e., $x_{i+2}$ in this 3 previous days example.
+\end{itemize}
+
+The target / label vector will remain unchanged:
+\begin{equation*}
+\mathbf{y} = \begin{Bmatrix}
+y_1 \\
+y_2 \\
+y_3
+\end{Bmatrix}
+\end{equation*}
+
+% The thought process behind our sliding window approach has to do with the data and the following: The dataset is NOT stationary. The data is not independent and identically distributed.
+This design is motivated by the nature of the energy market data, which is \textit{non-stationary}, as the statistical properties of electricity prices (e.g. mean, variance) change over time due to evolving supply and demand dynamics, regulatory interventions, and renewable energy contributions. Since the dataset has inherent \textit{temporal dependencies}, as prices are typically dependent on recent values, making the assumption of independent and identically distributed (i.i.d.) samples would be invalid. The aim is to identify \textit{local trends}, implementing a sliding windows approach allows the model to capture short-term patterns and trends without requiring the data to be stationary.
+
+By using a sliding window mechanism, the models will be trained on a continuous stream of overlapping data segments. This not only increases the number of training samples, enhancing generalization, but also aligning with the real-world scenario of forecasting the next value based on a recent history of observations. The ultimate aim is to build feature matrix using the sliding window approach to provide a robust and flexible representation of temporal data, allowing traditional machine learning models to operate more effectively in a domain typically reserved for time-series-specific methods.
+
+The following Python Script consists on the code necessary to create the simple feature matrix, which was initially generated based off \textit{MarginalES} values, with the desired sliding window width for that training batch:
+\begin{lstlisting}
+import pandas as pd
+import numpy as np
+
+def create_feature_matrix(data, lag_price_window):
+    """
+    Creates a feature matrix where each row is a sliding window of prices,
+    and a corresponding target vector containing the next price value.
+    
+    Parameters:
+    ----------
+    - data: DataFrame with 'Datetime' and 'MarginalES' columns
+    - lag_price_window: Size of the prices sliding window
+    
+    Returns:
+    -------
+    - X: DataFrame with sliding windows as rows
+    - y: Series with target values (next price after each window)
+    """
+    # Extract the MarginalES column
+    if 'MarginalES' in data.columns:
+        prices = data['MarginalES'].values
+    else:
+        # Assume it's the second column (index 1)
+        prices = data.iloc[:, 1].values
+    
+    # Create empty matrices
+    X = np.zeros((len(prices) - lag_price_window, lag_price_window))
+    y = np.zeros(len(prices) - lag_price_window)
+    
+    # Fill the matrices with the sliding windows and targets
+    for i in range(len(prices) - lag_price_window):
+        X[i, :] = prices[i:i+lag_price_window]  # Window of prices
+        y[i] = prices[i+lag_price_window]       # Next price after window
+    
+    # Convert to DataFrame/Series for easier use in training
+    return pd.DataFrame(X), pd.Series(y)
+\end{lstlisting}
+
+For an example run we can retrieve from the database a sliding window of 6 days:
+\begin{small}
+\begin{verbatim}
+               Datetime  MarginalES
+187 2019-01-01 14:00:00       65.88
+188 2019-01-02 14:00:00       63.16
+189 2019-01-03 14:00:00       66.70
+190 2019-01-04 14:00:00       69.17
+191 2019-01-05 14:00:00       64.00
+192 2019-01-06 14:00:00       64.86
+\end{verbatim}
+\end{small}
+
+\begin{lstlisting}
+import pandas as pd
+from utils.matrix_builder import create_feature_matrix
+
+# read data
+csv_hour_file = '../data/ta_metrics/final_price_ta_metrics.csv'
+simple_df = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])
+simple_df = simple_df[['Datetime', 'MarginalES']]
+
+# Sliding window of 6 days
+train_start_date = '2019-01-01'
+train_end_date = '2019-01-07'
+
+simple_subset = simple_df[(simple_df['Datetime'] >= train_start_date) & (simple_df['Datetime'] <= train_end_date)]
+
+# Number of previous days as columns (features)
+lag_price_window = 3
+
+X_simple, y_simple = create_feature_matrix(simple_subset, lag_price_window)
+\end{lstlisting}
+
+We may confirm the simple matrix is correctly built with the following results:
+\begin{small}
+\begin{verbatim}
+print(X_simple)
+0      1      2
+0  65.88  63.16  66.70
+1  63.16  66.70  69.17
+2  66.70  69.17  64.00
+
+print(y_simple)
+0    69.17
+1    64.00
+2    64.86
+\end{verbatim}
+\end{small}
+
+This function was later modified and extended to incorporate additional feature columns such as the focus of our proposal, the technical indicators. These are the previously calculated metrics in order to expand the context our models will be able to train with. The following code displays the flexible and auto-adaptable code for any number of inputted metrics (columns) obtained from the secondary feature enhanced database, which includes the additional technical indicators:
+\begin{lstlisting}
+def create_ta_feature_matrix(dataframe, lag_price_window):
+    """
+    Creates a sliding window dataset for time series forecasting where each row contains:
+    1. A window of historical prices (right-aligned)
+    2. Feature values from the most recent point in the window
+    3. Target value (next price after the window)
+    
+    Parameters:
+    ----------
+    dataframe : pandas.DataFrame
+        DataFrame containing at minimum 'Datetime' and 'MarginalES' columns, 
+        plus any additional feature columns
+    lag_price_window : int
+        Number of data points to include in each window of prices
+        
+    Returns:
+    -------
+    X : pandas.DataFrame
+        Features DataFrame with:
+        - Historical prices labeled as 'price_t-n' through 'price_t-1'
+        - All additional features from the original dataframe
+    y : pandas.Series
+        Target values (price at time t)
+    """
+    
+    # Input validation
+    if lag_price_window < 1:
+        raise ValueError("Feature window size must be at least 1")
+    if len(dataframe) <= lag_price_window:
+        raise ValueError(f"DataFrame must have more rows ({len(dataframe)}) than lag_price_window ({lag_price_window})")
+    if 'Datetime' not in dataframe.columns or 'MarginalES' not in dataframe.columns:
+        raise ValueError("DataFrame must contain 'Datetime' and 'MarginalES' columns")
+
+    X, y = [], []
+    
+    # Extract price data and features
+    df_prices = dataframe[['Datetime', 'MarginalES']]
+    df_features = dataframe.iloc[:, 2:] # Exclude 'Datetime' and 'MarginalES'
+    feature_names = df_features.columns.tolist()
+
+    # Create samples from the data
+    for i in range(lag_price_window, len(df_prices)):
+        # Extract the window for prices as features (right-aligned)
+        window = df_prices.iloc[i-lag_price_window:i, 1].values.flatten()
+        
+        # Extract corresponding feature row (from the most recent point in the window)
+        feature_row = df_features.iloc[i-1].values.flatten()
+
+        # Concatenate window prices with feature row
+        X.append(np.concatenate((window, feature_row)))
+        y.append(df_prices.iloc[i, 1])  # Predict current price
+
+    # Create column names for the prices feature window
+    price_columns = [f'price_t-{lag_price_window-i}' for i in range(lag_price_window)]
+
+    # Return DataFrame and Series with proper column names
+    X_df = pd.DataFrame(X, columns=price_columns + feature_names)
+    y_series = pd.Series(y, name='price_t')
+    return X_df, y_series
+\end{lstlisting}
+
+Furthermore, for an example run of the matrix creation with the technical indicators we can retrieve the extended database and select the same date range as in the previous example for comparison:
+\begin{lstlisting}
+import pandas as pd
+from utils.matrix_builder import create_feature_matrix
+
+# read data
+csv_hour_file = '../data/ta_metrics/final_price_ta_metrics.csv'
+features_df = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])
+
+# Sliding window of 6 days
+train_start_date = '2019-01-01'
+train_end_date = '2019-01-07'
+
+feature_subset = features_df[(features_df['Datetime'] >= train_start_date) & (features_df['Datetime'] <= train_end_date)]
+
+# Number of previous days as columns (features)
+lag_price_window = 3
+
+X_extended, y_extended = create_expanded_feature_matrix(feature_subset, lag_price_window)
+\end{lstlisting}
+
+Here we may observe as similar matrix ton the earlier one, expanded laterally to include the new feature columns, such as the technical indicators and additional \textit{"Datetime"} related context:
+\begin{small}
+\begin{verbatim}
+print(X_extended)
+   price_t-3  price_t-2  price_t-1      SMA_3   SMA_5      SMA_7     SMA_14  \
+0      65.88      63.16      66.70  65.246667  64.974  63.842857  64.975000   
+1      63.16      66.70      69.17  66.343333  66.026  64.490000  65.401429   
+2      66.70      69.17      64.00  66.623333  65.782  65.434286  65.330000   
+
+      SMA_30     SMA_90    SMA_180  ...     RSI_30  BB_Width_7  BB_Width_14  \
+0  64.886000  65.044333  67.227333  ...  50.823486   17.871701    15.638302   
+1  64.988333  65.038667  67.272889  ...  52.153121   21.198596    16.528083   
+2  64.947333  65.184222  67.267611  ...  49.268675   11.634263    16.685668   
+
+      STD_7    STD_14    STD_30    STD_90  month  day_of_week  is_weekend  
+0  3.080999  2.636139  2.620006  4.626188    1.0          3.0         0.0  
+1  3.691585  2.804414  2.726835  4.620755    1.0          4.0         0.0  
+2  2.055690  2.828060  2.732317  4.369895    1.0          5.0         1.0
+
+print(y_extended)
+0    69.17
+1    64.00
+2    64.86
+\end{verbatim}
+\end{small}
+
+
+% Training of each model with the Matrix
+\section{Machine Learning Model Training}
+
+There are multiple strategies that can be implemented for an effective model training, depending on if the dataset is \textit{stationary} or not. An \textit{incremental} approach can be taken when de data is  \textit{stationary}, since in this case, the accumulating the data points will benefit the model's training. An \textit{adaptive} approach is in order when the dataset is of \textit{non-stationary} nature. Similar to an exponential moving average, where the newer data holds more weight, while the older data's importance is progressively minimized, this investigation's models were trained with a sliding window approach, where the older data points are cut off. This training method "forgets" the earliest values as they are no longer relevant in order to make the latest prediction, which is is the case in the energy prices database
+
+The idea behind the previously introduced \textit{adaptive learning} approach is simple, we will create a 1 day step loop across the complete time series. A finite set of days will be used in training each model, with each instance being utilized for one single prediction. The training phase will consist on searching the optimal sliding window of days, with the calculated set of features. In each iteration, the model will be trained with a set feature matrix, and will then be fed with the next feature row to test its prediction abilities.
+
+Continuing with our previous example, the model will be trained with the feature matrix $\mathit{X}$.
+
+% Training Diagram
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node distance=2cm and 1.5cm,
+        every node/.style={font=\small},
+        model/.style={rectangle, minimum width=2.5cm, minimum height=1.2cm, text centered, draw=black, fill=blue!10},
+        % model/.style={rectangle, minimum width=2.5cm, minimum height=1.2cm, text centered, draw=black},
+        arrow/.style={thick,->,>=Stealth}
+    ]
+
+    % Nodes
+    \node (input) {$
+                    {X\_train} =
+                        \begin{Bmatrix}
+                            x_1 & x_2 & x_3 \\
+                            x_2 & x_3 & x_4 \\
+                            x_3 & x_4 & x_5
+                        \end{Bmatrix}, \quad
+                    {y\_train} =
+                        \begin{Bmatrix}
+                            y_1 \\
+                            y_2 \\
+                            y_3
+                        \end{Bmatrix}
+                   $};
+    \node (model) [model, right=of input] {ML Model Training};
+
+    % Arrows
+    \draw [arrow] (input) -- (model);
+
+    \end{tikzpicture}
+    \caption{Simple Training Example}
+    \label{fig:train_example}
+\end{figure}
+
+In order to predict a new value, for example, $\hat{y_4}$, the model will be fed the next row of feature values \{$x_4, x_5, x_6$\}, where $x_6$ will be our last known value, $y_3$.
+
+% Predicting Diagram
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node distance=2cm and 1.5cm,
+        every node/.style={font=\small},
+        model/.style={rectangle, minimum width=2.5cm, minimum height=1.2cm, text centered, draw=black, fill=blue!10},
+        % model/.style={rectangle, minimum width=2.5cm, minimum height=1.2cm, text centered, draw=black},
+        arrow/.style={thick,->,>=Stealth}
+    ]
+
+    % Nodes
+    \node (input) {$
+                    {X\_to\_predict} =
+                        \begin{Bmatrix}
+                            x_4 & x_5 & x_6
+                        \end{Bmatrix}
+                   $};
+    \node (model) [model, right=of input] {ML Model Predict};
+    \node (output) [right=of model] {$\hat{y_4}$};
+
+    % Arrows
+    \draw [arrow] (input) -- (model);
+    \draw [arrow] (model) -- (output);
+
+    % % Annotation
+    % \node [below=0.7cm of input] {\footnotesize $x_6 = y_3$};
+
+    \end{tikzpicture}
+    \caption{Simple Prediction Example}
+    \label{fig:pred_example}
+\end{figure}
+
+% Having obtained fully functional matrices for both scenarios, we can use them to train each model and predict the next target value.
+
+% - Linear Regression: Linear combination of every feature
+The model selection for the project will consist of three models: the Linear Regressor, the Lasso Regressor, and the Random Forest Regressor. The first of the models, the \textit{Linear Regressor} will serve as our baseline. This model assumes that the target variable can be approximated as a linear combination of the input features.
+
+
+% - Lasso Regression: Linear model that penalizes unused features
+% As reviewed in the background section, the...
+Our second model, the \textit{Lasso Regressor}, extends the linear model by introducing L1 regularization, which has the ability to penalize unused features. This penalty encourages sparsity in the feature weights, effectively performing feature selection. By the selection of its hyperparameter \textit{alpha} ($\alpha$), we can modify the strength of the models regularization, potentially improving the model's performance. By tuning \textit{alpha}, we can determines how strongly the model penalizes non-zero coefficients, potentially improving generalization and reducing overfitting. To optimize our predictions, we will later experiment across a variety of \textit{alpha} hyperparameter values.
+
+% To achieve this, all of the parameter values selected will be tested in every sliding window iteration, noting down the \textit{alpha} value that renders the result with the minimum error to the actual data point.
+
+
+% - Random Forest: --- Soft on peaks
+The third and final model considered in this investigation, is the \textit{Random Forest Regressor}, an ensemble learning method based on decision trees. It constructs multiple decision trees during training, and aggregates their outputs, typically by averaging in the regression tasks. This model has been included as a non-linear alternative to validate the performance of the linear models and capture more complex relationships within the data.
+
+% There are two main parameters that we will focus on tuning. The number of trees in the forest (\small{\verb|n_estimators|}) and the maximum depth of the tree branches (\small{\verb|max_depth|}) will be tuned.
+
+% Similar to the training process of the Lasso Regressor, for every sliding window iteration each combination of parameters will be tested. Likewise, we will save the combination of parameters with the best result, with the least error to the actual data point.
+
+
+Regardless of the chosen model, the training strategy will be as follows: After importing the complete dataset, we will define the number of days you want to include in the sliding window. This determines how many days from the time series will be included in the training. At the same point, we will select the desired number of previous days to be included in the feature matrix as columns. Depending on the selection of the sliding window size, there will be more or less models to train.
+
+After initializing the variables where the predictions, actual values, and their time stamps will be stored at, the training loop will begin. Here, a new model will be trained per iteration as seen in Figure \ref{fig:train_example}, and a new value will be predicted as seen in Figure \ref{fig:pred_example}. Once all models and predictions have been processed, the \small{\verb|prediction_df|} DataFrame will be available for evaluation of the predictive precision of the training loop.
+
+To finalize the theoretical system description, the following example script demonstrates in Python code the basic concept of our sliding window training process, in which any given model could be used. However, it is a basic example that does not consider any hyperparameter tuning. This will be covered in the following section, the dedicated \textit{Experimentation} chapter.
+\begin{lstlisting}
+import pandas as pd
+from utils.matrix_builder import create_expanded_feature_matrix
+
+# Import your preferred model here
+from model_library import preferred_model
+
+# Debug parameter
+DEBUG = False
+
+if DEBUG:
+    print("Debug mode is ON. Detailed output will be printed.")
+
+# Load Database
+csv_hour_file = '../data/ta_metrics/final_price_ta_metrics.csv'
+df = pd.read_csv(csv_hour_file, parse_dates=['Datetime'])
+
+# Define the Sliding Windows for this run
+sliding_window = 10 # of days to train on (matrix rows)
+lag_price_window = 3  # Window of the number of previous days as features (matrix columns)
+
+# The following +1 is used to include the next row as the test set for model validation
+training_sliding_window = sliding_window + 1
+
+# Calculate number of sliding window models to train in the dataset
+num_sliding_windows = len(df) - training_sliding_window
+if DEBUG:
+    print(f"Number of rows in the dataset: {len(df)}")
+
+print(f"Number of sliding windows to train: {num_sliding_windows}")
+
+# Initialize lists to store predictions, actuals, and timestamps
+predictions_list = []
+actuals_list = []
+timestamps_list = []
+
+# Initialize the model
+model = preferred_model
+
+for i in range(num_sliding_windows):
+    if DEBUG:
+        print(f"Processing sliding window {i + 1}/{num_sliding_windows}...")
+
+    # Ensure we do not go out of bounds
+    if i + training_sliding_window >= len(df):
+        break
+    
+    sliding_window_set = df.iloc[i : i + training_sliding_window]
+    
+    # Create feature matrix and target variable for training
+    X_train, y_train = create_expanded_feature_matrix(sliding_window_set, lag_price_window)
+    
+    # Split into training matrix and prediction feature row
+    X_train_fit = X_train.iloc[:-1]
+    y_train_fit = y_train.iloc[:-1]
+
+    X_to_predict = X_train.iloc[-1:]
+    y_to_predict = y_train.iloc[-1]
+
+    # Train the model with the feature matrix
+    model.fit(X_train_fit, y_train_fit)
+
+    # Make prediction with the next row of features
+    y_predicted = model.predict(X_to_predict)
+
+    # Add bounds checking to catch extreme predictions
+    if y_predicted[0] < 0: # Avoid negative price predictions, set lower limit to 0
+        y_predicted[0] = 0
+    if y_predicted[0] > 1000: # limit to 1000, avoiding unrealistic predictions
+        y_predicted[0] = 1000
+
+    # Store results for this sliding window
+    predictions_list.append(y_predicted[0])
+    actuals_list.append(y_to_predict)
+    if 'Datetime' in sliding_window_set.columns:
+        timestamps_list.append(sliding_window_set.iloc[-1]['Datetime'])
+    else:
+        timestamps_list.append(i + training_sliding_window - 1)
+
+# Create prediction vs actual DataFrame
+prediction_df = pd.DataFrame({
+    'Timestamp': timestamps_list,
+    'Predicted': predictions_list,
+    'Actual': actuals_list
+})
+\end{lstlisting}
+
+
+
+% Chapter 4 - Experimentation
+\chapter{Experimentation}
+This chapter is dedicated to reviewing all of the relevant information pertaining the experimentation phase of the project. We will review the specifics of the data that was dealt with, and explain the decisions taken for the preparation of such data, and the training of the different machine learning models employed. We will review all of the results of the different models, and discuss in depth the different set-up variations for the models.
+
+
+\section{Data Description} % Data Description – OMIE data
+The data that was used for this project was exclusively publicly available information, published by the OMIE (\textit{Operador del Mercado Ibérico de Energía}), the operator of the Iberian energy market. The data that was retrieved from their website \cite{omie_datos} for this project takes the following shape:
+
+\begin{small}
+\begin{verbatim}
+MARGINALPDBC;
+2018;01;01;1;28.1;6.74;
+2018;01;01;2;33;4.74;
+2018;01;01;3;32.9;3.66;
+2018;01;01;4;28.1;2.3;
+2018;01;01;5;27.6;2.3;
+2018;01;01;6;24.6;2.06;
+2018;01;01;7;20.1;2.06;
+2018;01;01;8;19.9;2.06;
+2018;01;01;9;19.84;2.3;
+2018;01;01;10;19.9;2.3;
+2018;01;01;11;19.9;2.3;
+2018;01;01;12;19.9;2.3;
+2018;01;01;13;23.6;2.3;
+2018;01;01;14;25.1;2.3;
+2018;01;01;15;23.6;5;
+2018;01;01;16;24.6;5;
+2018;01;01;17;25.1;5;
+2018;01;01;18;27.6;8.85;
+2018;01;01;19;27.6;15.93;
+2018;01;01;20;28.1;22.02;
+2018;01;01;21;32.9;20;
+2018;01;01;22;28.1;21.95;
+2018;01;01;23;28.1;23.52;
+2018;01;01;24;27.6;16.35;
+*
+\end{verbatim}
+\end{small}
+
+We can understand and interpret this format following the OMIE's guide: \textit{Modelo de Ficheros para la distribución pública de Información del mercado de electricidad 1.35} \cite{omie_formatos_2024}. In page number 67, chapter 6.18 we may find the following information regarding the encoding format for the information:
+
+\begin{small} % so a bit more text can appear
+\begin{verbatim}
+6.18 Precios marginales del mercado diario (MARGINALPDBC)
+
+Fichero con los precios marginales del Mercado Diario para cada una de
+las horas.
+Nombre del fichero: marginalpdbc_aaaammdd.v donde aaaammdd
+corresponde a la fecha de sesión y v es la versión del fichero.
+
+Descripción de los campos:
+CAMPO DESCRIPCIÓN VALORES VÁLIDOS
+Año Año I4 – 20XX
+Mes Mes I2 – 1 a 12
+Día Día I2 – 1 a 31
+Hora Hora I2 – 1 a 25
+MarginalPT Precio marginal zona Portuguesa F8.2 – -99999.99 a 99999.99
+MarginalES Precio marginal zona Española F8.2 – -99999.99 a 99999.99
+\end{verbatim}
+\end{small}
+
+From this data description we can obtain the following column names: \textit{Año, Mes, Día, Hora, MarginalPT} and \textit{MarginalES}. As a proof of concept, in this investigation we will be focusing on a single time slot, simplifying the data, from multiple data points per day, to a single one. We are exclusively interested in the value of the last column, \textit{MarginalES}, and specifically the row pertaining the 14\textsuperscript{th} hour of each day, which we will refer to as 14H.
+% another option 14$^{th}$
+
+After the data is ingested to the 
+\noindent \textbf{Data analysis:}
+As previously commented: the in the
+No estacionario.
+
+No son datos IID - Independientes e identicamente distribuidos.
+
+Hay correlacion en mis datos entre cada dia? Si deberia ser relativamente alta, estacional, pero progresiva y lenta.
+
+For the data visualization portion, I employed various methods, bot plotting values with matplotlib, seaborn and using the Microsoft Data Wrangler Visual Studio Code extension.
+
+Explain some more about the data distribution.
+
+Explain the ups and downs of the data (war and relation to natural gas prices).
+
+Explain the zero price.
+
+
+\section{Model Set Up Explanation}
+How do I use in practice the previously explained system - what parameters did I modify to obtain the final results. Feature engineering, Alpha variation testing in Lasso, Tree depth and number of leafs.
+
+Que modelos y que configs
+
+Cross validation?? Not really done, in another way w the sliding window
+
+cambio parametros pero no la arquitectura del modelo
+
+
+%%% Describe modifications in experimentation
+%como lo usas en el sentido de tocar cosas, parametros como numero de arboles profundidad, el Alpha del lasso
+
+- Linear Regressor: A linear combination of every feature
+
+No optimization to be done here, just testing different sliding windows
+
+- Lasso Regressor: A linear model that penalizes unused features
+
+Experimenting with alpha using a loop or GridSearchCV to find the optimal value.
+
+% For our second model we will employ the \textit{Lasso Regressor}, which unlike our baseline linear model, has the ability to penalize unused features. By the selection of its hyperparameter \textit{alpha} ($\alpha$), we can modify the models behavior, potentially improving the model's performance. The \textit{alpha} ($\alpha$) parameter determines how harsh the regularization process of the features is, meaning how lenient our model is towards employing certain features.
+
+As mentioned earlier, tuning the hyperparameter \textit{alpha} enables To optimize our predictions, we will later experiment across a variety of \textit{alpha} hyperparameter values.
+
+To achieve this, all of the parameter values selected will be tested in every sliding window iteration, noting down the \textit{alpha} value that renders the result with the minimum error to the actual data point.
+
+
+- Random Forest: Soft on peaks - tune hyperparameters like n estimators, max depth, etc.
+
+There are two main parameters that we will focus on tuning. The number of trees in the forest (\small{\verb|n_estimators|}) and the maximum depth of the tree branches (\small{\verb|max_depth|}) will be tuned.
+
+Similar to the training process of the Lasso Regressor, for every sliding window iteration each combination of parameters will be tested. Likewise, we will save the combination of parameters with the best result, with the least error to the actual data point.
+
+
+\section{Results of the Testing}
+Results as graph/ tables - This would be to compare a model across various iterations. Model best-run comparisons, etc.
+% a modo tabla unica comparando todas las iteraciones de cada technologia, y luego una conjunta con la mejor de todo (Si me hace falta mas, pues al apendice)
+
+Review error rates and compare with other iterations/ batches and other models.
+
+Error medio en todas las predicciones
+
+Y percentiles (expectation shortfall tambien?)
+
+
+\section{Discussion} % of the results
+This would be the final explanation that I would give to a colleague of mine, with full details on how I have done everything
+%----------------------------------
+
+
+
+% Chapter 5 - Regulatory Framework (Marco Regulador)
+\chapter{Regulatory Framework}
+Not essential for this investigative project because we do not go to market.
+
+
+\section{Data Availability}
+Habria que hablar de las normas, pq si alguien lo usa es para ir a mercado
+
+Current Spanish and European regulations allow for the use of publicly available institutional data for use in educational investigative work.
+
+I need to talk about laws, what data is permissible to use and how. This would be essential for a project that does indeed go to market.
+
+For us, its not that relevant.
+
+
+\section{Software \& Licenses}
+
+For the development of this project I have used a variety of open and closed source utilies and code.
+
+For the sake of organization, I will categorize this section into two distinct parts, required software to reproduce the project, and optional software for ease of production, plannification, organization or otherwise related.
+
+Required:
+
+Python - This was the programming language in wich the entirety of the project was developed \cite{python}
+
+Scikit-learn - library for ml \cite{scikit-learn}
+
+Pandas - data management \cite{pandas}
+
+ta library - Technical Analysis library\cite{ta-lib}
+
+Light use of Seaborn - data visualization \cite{seaborn}
+
+NumPy - number manipulation \cite{numpy}
+
+macOS / Windows - closed source platforms across where the project was developed \cite{macos} \& \cite{windows}
+
+Optional:
+
+Git - a distributed version control system \cite{git}
+
+GitHub - Repository hosting platform \cite{github}
+
+Visual Studio Code - open source text editor for my general coding needs \cite{vscode}
+
+Visual Studio Code extensions such as Microsoft Data Wrangler, Python packages or such
+
+Python Virtual Environment (venv) - This was created as it is best practice to create new Python virtual environments for each new project, as specially in a production environment these usually require certain specific versions that must be met in order for all components to work as intended. An alternative method of dealing with this would be using Conda, and creating with it a new Conda environment, \cite{python_venv}
+
+Overleaf - closed source platform used to compile LaTeX code \cite{overleaf}
+
+LaTeX - open source language used to create the final project document \cite{latex}
+
+OpenAI ChatGPT, Google Gemini \& Anthropic Claude - closed source large language models used to aid in troubleshooting general coding issues
+
+
+
+% Chapter 6 - Socio-economic Environment - Entorno socio-economico
+\chapter{Socio-economic Environment}
+Into to this?
+
+
+% \section{Socio-economic Impact}
+\section{Impact}
+
+Why is this relevant?
+
+- Energy Prediction
+
+- Shutdowns
+
+- Price sensitivity
+
+In this project we have
+
+% En este TFG, se dan algunas pinceladas sobre una posible aplicación futura de las
+% redes SDN de nueva generación en entornos de defensa, concretamente en entornos de
+% aviónica militar.
+% Por medio de la aplicación SDN desarrollada, se han podido exponer las a la vez las
+% bondades y maldades de este paradigma. Citando algunas de sus mayores bazas concep-
+% tuales, el uso de las SDN con su heterogeneización de los equipos de red puede conllevar
+% una drástica reducción de consumo de materias primas, al poder utilizar distintos tipos de
+% hardware y poder aprovecharlos de distintas maneras a lo largo de su vida útil.
+% Añadiendo a este razonamiento, las SDN habilitan la posibilidad de implantar solu-
+% ciones con compatibilidad hacia atrás, algo que en entornos de defensa, al menos en la
+% división de AIRBUS junto con la que se ha realizado este TFG, no se encuentra general-
+% mente entre los objetivos prioritarios a la hora de desarrollar nuevos sistemas para este
+% ámbito.
+
+
+\section{Project Plan}
+TODO: Gantt diagram representing time spent in each phase - Design and innovation time frames
+
+\begin{figure}[H]
+    \centering
+    \begin{ganttchart}[
+        x unit=1cm, % width of one month
+        y unit chart=0.8cm,
+        hgrid,
+        vgrid,
+        time slot unit=month,
+        time slot format=isodate-yearmonth,
+        % compress calendar, % what is this / why is it not working?
+        bar height=0.6
+        ]{2024-09}{2025-06}
+    
+        \gantttitlecalendar{year, month=shortname} \\
+    
+        \ganttgroup{Project Phase 1}{2024-09}{2025-01} \\
+        \ganttbar{System Design}{2024-10}{2024-12} \\
+        \ganttbar{Coding}{2024-12}{2025-01} \\
+    
+        \ganttgroup{Project Phase 2}{2025-01}{2025-06} \\
+        \ganttbar{Results Gathering}{2025-01}{2025-05} \\
+        \ganttbar{Redacting the Thesis}{2025-05}{2025-06}
+    
+    \end{ganttchart}
+    \caption{Gantt Diagram of the Project Lifecycle}
+    \label{fig:gantt_diagram}
+\end{figure}
+
+
+\section{Budget}
+This section will consist of a complete price breakdown of the investigation, consisting of material costs such as the equipment utilized, and the human capital that composed the investigation team. It is notable to highlight that as previously mentioned, no paid license of any sort was obtained for the realization of this project. All of the programs, tools or code, were either \textit{Open Source} or free to use software under exclusive \textit{non-commercial use} licenses.
+
+The most basic requirement for the physical needs of this project is a computer with an desktop operating system. Since the project was written in Python \cite{python}, it would be reasonable to consider it platform agnostic. Any computer capable of running any recent operating system, configured with a recent version of Python would be able to run this project. This includes any of the three most popular desktop operating systems, Windows, macOS and any Linux distribution.
+
+The project was mainly tested using Python 3.13 \cite{python3.13} which does require a recent operating system such as macOS 13 or Windows 10. But as for the project itself, there is no platform, processor architecture, or processing power requirements. In my case, I mainly developed the code in my personal laptop, a 2021 MacBook Pro configured with the ARM M1 Pro chip and 16GB of RAM, running the latest available macOS version at this time, macOS 15 \cite{macos}. This laptop was obtained from a second-hand store circa June 2024, mainly for personal use, but also helping keep the theoretical project costs down.
+
+The following table outlines the specific equipment costs incurred for the development of this investigative project:
+\begin{table}[H]
+	\caption{Equipment Amortization}
+	\centering
+	\begin{tabular}{|P{2.8cm}|P{1.8cm}|P{2.5cm}|P{1.5cm}|P{2cm}|P{1.5cm}|}
+		\hline
+		\textbf{Equipment} & \textbf{Price (€)} & \textbf{Amortization per year (€)} & \textbf{Useful Life (years)} & \textbf{Usage Time (months)} & \textbf{Cost (€)} \\
+		\hline
+		MacBook Pro M1 Pro & 1250 & 312.5 & 4 & 9.5 & 247.4 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Regarding the human capital that was required for the successful development of this project, it will consist exclusively on two people. The director of my bachelor's thesis, professor Emilio Parrado Hernández, PhD, as the expert Machine Learning consultant, and myself as a junior software engineer.
+
+The following table displays the estimated hourly rates of each person, the hours dedicated to the project, and the total cost:
+            
+\begin{table}[H]
+	\caption{Human Costs}
+	\centering
+	\begin{tabular}{|P{4cm}|P{3.5cm}|P{1.8cm}|P{1.5cm}|P{1.5cm}|}
+		\hline
+		\textbf{Name} & \textbf{Role} & \textbf{Price (€/hour)} & \textbf{Hours} & \textbf{Cost (€)} \\
+		\hline
+		Emilio Parrado Hernández & Expert ML Consultant (PhD) & 200 & - & - \\
+		\hline
+		Rodrigo De Lama Fernández & Junior Engineer (Pre-Graduate) & 30 & - & - \\
+		\hline
+	\end{tabular}
+\end{table}
+
+For our final budgeting considerations, other miscellaneous expenses, such as transportation costs to the university for on site meetings with my bachelor's thesis director. Summing up all costs, the following table estimates what this project would have cost to investigate:
+
+\begin{table}[H]
+    \caption{Final Cost Breakdown}
+    \centering
+    \begin{tabular}{|l|r|}
+        \hline
+        \textbf{Concept} & \textbf{Cost (€)} \\
+        \hline
+        Direct/Material Costs & 247.4 \\
+        Engineering Costs & - \\
+        University Carlos III Costs - Expert ML Consultant & - \\
+        \hline
+        \textbf{Total} & \textbf{-} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+
+% Chapter 7 - Conclusions
+\chapter{Conclusions}
+In this investigation we have analyzed in depth an innovative methodology for predictive modeling of energy prices with Machine Learning algorithms, enhanced by the usage of technical analysis indicators in feature engineering, in order to enhance prediction precision. This final chapter will review the general conclusions attained throughout the development of this project's Machine Learning based solution for energy price predictions. It will also discuss potential development paths for future work pertaining the system designed in this investigative project
+
+
+% Merged into one section only
+% \section{Review of the Investigation} % A recap of the project
+% \section{Revisiting the Objectives}
+
+\section{Revisiting the Objectives of the Project}
+After finishing the whole project, read it, and reintroduce the objectives to the reader. Remind them of the completion of them
+
+Predicting the prices in an accurate manner using Machine Learning models using feature engineering with technical analysis indicators
+
+
+\section{Future work}
+- Less absolute error
+
+- Menos piradas de modelos
+
+- Better overall precision: better percentile accuracy
+
+- Combinacion de modelos para una mejor prediccion? - La consistencia de Random Forest con los picos de los modelos lineales?
+
+- 
+
+
+
+%----------
+%	Bibliography
+%----------	
+
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\printbibliography
+
+
+
+%----------
+%	Appendix
+%----------	
+
+% If your work includes Appendix, you can uncomment the following lines
+%\chapter* {Appendix x}
+%\pagenumbering{gobble} % Appendix pages are not numbered
+
+
+
+\end{document}
