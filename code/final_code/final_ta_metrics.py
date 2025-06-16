@@ -4,7 +4,8 @@ Bachelor Thesis: Machine Learning-Based Predictive Modeling of Energy Prices
 Author: Rodrigo De Lama Fernández
 Professor: Emilio Parrado
 
-Date: 2025-06-06
+Date: 2025-11
+Updated: 2025-05-30
 File: code/metrics/final_ta_metrics.py
 '''
 
