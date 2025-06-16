@@ -1,0 +1,96 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsmath, amssymb, geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{hyperref}
+
+\title{Feature Matrix Creation for Time-Series Regression}
+\author{Rodrigo De Lama Fernández}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{The Feature Matrix Creation}
+
+\subsection{Theory Behind Feature Matrices}
+
+The creation of a \textit{feature matrix} lies at the core of any supervised learning model. In this context, the objective is to structure historical energy price data into a form that can be effectively used to predict future prices. This transformation is critical when dealing with time-series data, where observations are ordered in time and often exhibit autocorrelation, seasonality, and non-stationarity.
+
+\subsubsection{Definition of Feature Matrix and Target Vector}
+
+    The feature matrix, often denoted as $\mathbf{X}$, represents the input data used to     train the model, while the target vector $\mathbf{y}$ contains the values the model is intended to predict.
+
+    A simple example using only price values can be represented as:
+
+    \begin{equation*}
+    \mathbf{X} = \begin{Bmatrix}
+    x_1 & x_2 & x_3 \\
+    x_2 & x_3 & x_4 \\
+    x_3 & x_4 & x_5
+    \end{Bmatrix}, \quad
+    \mathbf{y} = \begin{Bmatrix}
+    y_1 \\
+    y_2 \\
+    y_3
+    \end{Bmatrix}
+    \end{equation*}
+
+Here, each row of $\mathbf{X}$ corresponds to a window of past values, and the corresponding element in $\mathbf{y}$ is the value that follows that window:
+
+\begin{align*}
+y_1 &= x_4 \\
+y_2 &= x_5 \\
+y_3 &= x_6
+\end{align*}
+
+This setup reflects the temporal dependency in time-series data, where future values are predicted based on a fixed number of past observations. This approach allows machine learning models to "learn" these patterns over time.
+
+\subsubsection{Incorporating Technical Analysis Indicators}
+
+To enrich the model’s inputs, additional features derived from technical analysis (e.g., moving averages, Bollinger bands, rate of change) are incorporated. These indicators are calculated over historical price windows and added as extra columns to the feature matrix:
+
+\begin{equation*}
+\mathbf{X} = \begin{Bmatrix}
+x_1 & x_2 & x_3 & ta_{11} & ta_{21} & \cdots & ta_{n1}\\
+x_2 & x_3 & x_4 & ta_{12} & ta_{22} & \cdots & ta_{n2}\\
+x_3 & x_4 & x_5 & ta_{13} & ta_{23} & \cdots & ta_{n3}
+\end{Bmatrix}
+\end{equation*}
+
+Where:
+\begin{itemize}
+    \item $x_i$ are raw price values from previous time steps,
+    \item $ta_{ij}$ is the $j$-th technical indicator calculated at time step $i$,
+    \item $n$ is the number of indicators.
+\end{itemize}
+
+The target vector remains unchanged:
+
+\begin{equation*}
+\mathbf{y} = \begin{Bmatrix}
+y_1 \\
+y_2 \\
+y_3
+\end{Bmatrix}
+\end{equation*}
+
+\subsection{Rationale for Sliding Window Approach}
+
+This design is motivated by the nature of the energy market data:
+
+\begin{itemize}
+    \item \textbf{Non-stationarity:} The statistical properties of electricity prices (e.g., mean, variance) change over time due to evolving supply-demand dynamics, regulatory interventions, and renewable energy contributions.
+    
+    \item \textbf{Temporal dependencies:} Prices are highly dependent on recent values, making the assumption of independent and identically distributed (i.i.d.) samples invalid.
+    
+    \item \textbf{Local trends and seasonality:} Sliding windows allow the model to capture short-term patterns and trends without requiring the data to be stationary.
+\end{itemize}
+
+By using a sliding window mechanism, the model is trained on a continuous stream of overlapping data segments. This not only increases the number of training samples, enhancing generalization, but also aligns with the real-world scenario of forecasting the next value(s) based on a recent history of observations.
+
+\noindent In summary, the feature matrix built using the sliding window approach provides a robust and flexible representation of temporal data, allowing traditional machine learning models to operate effectively in a domain typically reserved for time-series-specific methods.
+
+\end{document}
